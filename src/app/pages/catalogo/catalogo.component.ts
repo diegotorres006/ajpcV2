@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Producto } from '../../../models/producto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
@@ -18,14 +19,20 @@ export class CatalogoComponent implements OnInit {
   selectedProduct: Producto | null = null; // Property to store the selected product
 
   constructor(
-    private productoService: ProductoService // Inject ProductoService
+    private productoService: ProductoService, // Inject ProductoService
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.productoService.getProducto().subscribe({
       next: (products: Producto[]) => {
         this.allProducts = products;
-        this.applyFilters(); // Apply filters initially
+        this.route.queryParams.subscribe(params => {
+          if (params['category']) {
+            this.selectedCategory = params['category'];
+          }
+          this.applyFilters(); // Apply filters initially
+        });
       },
       error: (err) => {
         console.error('Error fetching products:', err);

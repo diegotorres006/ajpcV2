@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div class="hero-container" (click)="navigateToCatalogo()">
+    <div class="hero-container" (click)="navigateToCatalogo('Ambulancia')">
       <div class="men-container">
         <img [src]="imagenActual" alt="Imagen ambulancia" class="imagen-rotativa">
       </div>
@@ -35,7 +35,7 @@
 
   <!-- Video Section -->
   <section class="videos">
-    <video #videoPlayer class="video" autoplay loop playsinline muted>
+    <video #videoPlayer class="video" autoplay loop playsinline muted preload="auto">
       <source src="assets/ambulancia video.mp4" type="video/mp4">
     </video>
   </section>

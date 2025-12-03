@@ -1,14 +1,17 @@
+/* ===== Tipografía Global Inter ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 /* ===== Global Reset ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif !important;
 }
 
 html, body {
   width: 100%;
   overflow-x: hidden;
-  font-family: 'Inter', sans-serif;
   background-color: #f9f9f9;
 }
 
@@ -42,13 +45,14 @@ html, body {
 .arriba h1 {
   font-size: 2.8rem;
   color: #0d47a1;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .arriba p {
   font-size: 1.2rem;
   color: #333;
   margin-top: 0.5rem;
+  font-weight: 400;
 }
 
 /* ===== Botones con Imagen ===== */
@@ -143,6 +147,7 @@ html, body {
   font-size: 2rem;
   margin-bottom: 2rem;
   color: #0d47a1;
+  font-weight: 700;
 }
 
 .products-grid {
@@ -174,6 +179,7 @@ html, body {
 .product-description {
   margin: 0.5rem 0;
   color: #555;
+  font-weight: 400;
 }
 
 .product-category {

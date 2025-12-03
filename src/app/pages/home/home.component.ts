@@ -73,12 +73,20 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
     // Programmatically mute the video
     if (this.videoPlayer && this.videoPlayer.nativeElement) {
-      this.videoPlayer.nativeElement.muted = true;
-      // The 'autoplay' attribute in the template should handle video playback.
-      // Explicitly calling play() here can sometimes lead to errors if the browser
-      // blocks autoplay for power-saving reasons, as indicated by the recent feedback.
-      // Relying on the 'autoplay' attribute is generally preferred.
-    }
+  const video = this.videoPlayer.nativeElement;
+
+  video.muted = true;   
+  video.volume = 0;     
+
+
+  const playPromise = video.play?.();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+    
+    });
+  }
+}
+
   }
 
   ngOnDestroy(): void {
@@ -128,7 +136,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   }
 
   // Method to navigate to the catalog page
-  navigateToCatalogo(): void {
-    this.router.navigate(['/catalogo']);
+  navigateToCatalogo(category: string): void {
+    this.router.navigate(['/catalogo'], { queryParams: { category: category } });
   }
 }

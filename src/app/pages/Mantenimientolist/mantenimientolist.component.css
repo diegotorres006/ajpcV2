@@ -1,70 +1,92 @@
 /* =============================
    GOOGLE FONTS
 ============================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 /* =============================
    GLOBAL STYLES
 ============================= */
-body {
-  font-family: 'Inter', Arial, sans-serif;
-  color: #333;
-  font-size: 16px;
-  line-height: 1.6;
-  background-color: #f5f6fa;
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  color: #2c2c2c;
+  font-size: 16px;
+  line-height: 1.65;
+  background-color: #f5f7fb;
 }
 
 /* =============================
    HEADINGS
 ============================= */
 h1, h2, h3 {
-  font-family: 'Inter', sans-serif;
   font-weight: 600;
-  color: #2c3e50;
-  margin: 0 0 15px 0;
+  color: #1f2d3d;
 }
 
 h1 {
-  font-size: 2.2em;
+  font-size: 2.3em;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
 
 h2 {
-  font-size: 1.8em;
+  font-size: 1.9em;
+  margin-bottom: 18px;
 }
 
 h3 {
-  font-size: 1.2em;
+  font-size: 1.25em;
   font-weight: 500;
+  margin-bottom: 10px;
 }
 
 /* =============================
    PARAGRAPHS
 ============================= */
 p {
-  font-size: 1em;
-  line-height: 1.7;
+  font-size: 1rem;
   color: #555;
+  margin-bottom: 10px;
 }
 
 /* =============================
    BUTTONS
 ============================= */
 button {
-  font-family: 'Inter', sans-serif;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  border-radius: 8px;
+  transition: 0.25s ease;
+  border: none;
+}
+
+button:hover {
+  transform: translateY(-2px);
 }
 
 /* =============================
    INPUTS
 ============================= */
-input[type="text"], input[type="url"], textarea {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 1em;
+input[type="text"],
+input[type="url"],
+textarea {
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #c9d1d9;
+  padding: 12px 14px;
+  transition: 0.25s ease;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52,152,219,0.15);
+  outline: none;
 }
 
 /* =============================
@@ -72,26 +94,23 @@ input[type="text"], input[type="url"], textarea {
 ============================= */
 .main-layout {
   display: flex;
-  align-items: flex-start;
+  gap: 40px;
   justify-content: center;
-  gap: 30px;
-  padding: 20px;
-  margin-bottom: 40px;
+  padding: 25px;
+  margin-bottom: 45px;
 }
 
-/* ===== Columna izquierda (contenido público) ===== */
 .content-column {
   flex: 2;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  max-width: 1200px;
+  gap: 28px;
 }
 
-/* ===== Columna derecha (panel admin fijo) ===== */
 .admin-column {
-  flex: 0 0 500px;
-  max-width: 600px;
+  flex: 0 0 450px;
+  max-width: 550px;
   min-width: 300px;
   position: sticky;
   top: 20px;
@@ -103,112 +122,90 @@ input[type="text"], input[type="url"], textarea {
 ============================= */
 .maintenance-info,
 .videos-section {
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  padding: 25px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+  border: 1px solid #e9eef3;
 }
 
-/* ===== Maintenance Info ===== */
 .maintenance-info h2 {
-  margin-bottom: 15px;
-  color: #1a3a57;
+  color: #1b3e63;
 }
 
 .maintenance-info p {
-  margin: 0;
   font-size: 1.05em;
   color: #444;
 }
 
 /* =============================
-   ADMIN VIDEO UPDATE (Panel)
+   ADMIN PANEL
 ============================= */
 .admin-video-update {
-  background: linear-gradient(145deg, #f0f4f8, #e6edf5);
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid #d0d9e6;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px 26px;
+  border: 1px solid #d7dde5;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 20px 25px;
-  transition: all 0.5s ease;
+  gap: 20px;
+  transition: 0.4s ease;
   max-height: 90vh;
   overflow: hidden;
 }
 
-/* ===== Botón superior (Editar Videos) ===== */
+/* Botón principal */
 .admin-video-update button:first-child {
-  margin-bottom: 15px;
   background: linear-gradient(90deg, #3498db, #5dade2);
   color: #fff;
-  border: none;
-  padding: 14px;
-  border-radius: 8px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
-  transition: all 0.3s ease;
+  padding: 15px;
+  font-size: 0.98rem;
+  letter-spacing: 0.4px;
+  border-radius: 9px;
+  box-shadow: 0 4px 10px rgba(52,152,219,0.35);
 }
 
 .admin-video-update button:first-child:hover {
-  background: linear-gradient(90deg, #2471a3, #2e86c1);
-  box-shadow: 0 6px 12px rgba(36, 113, 163, 0.4);
+  background: linear-gradient(90deg, #2e86c1, #2471a3);
+  box-shadow: 0 6px 12px rgba(36,113,163,0.38);
 }
 
-/* ===== Contenedor interno (inputs y lista) ===== */
+/* Inputs internos */
 .admin-inputs {
   display: flex;
   flex-direction: column;
   gap: 15px;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.5s ease, padding 0.5s ease;
+  transition: max-height 0.45s ease, padding 0.4s ease;
   padding: 0;
 }
 
-/* Expandir inputs cuando se activa */
 .admin-video-update.show-inputs .admin-inputs {
-  max-height: 1000px;
-  padding: 15px 0;
+  max-height: 1100px;
+  padding: 12px 0;
 }
 
-/* ===== Input Groups ===== */
+/* Inputs */
 .admin-input-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .admin-input-group label {
+  font-size: 0.95rem;
   font-weight: 500;
-  color: #34495e;
-  font-size: 0.95em;
+  color: #273746;
 }
 
-.admin-input-group input {
-  padding: 12px 14px;
-  border: 1px solid #bdc3c7;
-  border-radius: 8px;
-  font-size: 1em;
-  transition: all 0.3s ease;
-}
-
-.admin-input-group input:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52,152,219,0.15);
-  outline: none;
-  background-color: #fff;
-}
-
-/* ===== Lista de videos con scroll ===== */
+/* Lista de videos */
 .admin-video-list {
   margin-top: 15px;
   flex: 1;
-  overflow-y: auto;
   max-height: 60vh;
+  overflow-y: auto;
   padding-right: 8px;
 }
 
@@ -217,44 +214,25 @@ input[type="text"], input[type="url"], textarea {
 }
 
 .admin-video-list::-webkit-scrollbar-thumb {
-  background: #b5b5b5;
+  background: #bfc5cc;
   border-radius: 4px;
 }
 
 .admin-video-list::-webkit-scrollbar-thumb:hover {
-  background: #888;
+  background: #9aa1a8;
 }
 
 .admin-video-list .video-item {
-  margin-bottom: 20px;
-  background: #f8f9fa;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.admin-video-list iframe {
-  width: 100%;
-  border-radius: 6px;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 /* =============================
-   SECCIÓN DE VIDEOS (PÚBLICA)
+   VIDEOS PUBLICOS
 ============================= */
-.videos-section {
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  padding: 25px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.videos-section h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #2c3e50;
-}
-
-/* ===== Grid de videos ===== */
 .public-video-list {
   display: flex;
   flex-wrap: wrap;
@@ -263,67 +241,57 @@ input[type="text"], input[type="url"], textarea {
   direction: rtl;
 }
 
-/* Cada video */
 .video-item {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  padding: 15px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
   flex: 1 1 calc(50% - 20px);
-  box-sizing: border-box;
   direction: ltr;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .video-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  box-shadow: 0 7px 20px rgba(0,0,0,0.12);
 }
 
 .video-item h4 {
   text-align: center;
-  font-size: 1.1rem;
   margin-bottom: 10px;
+  font-size: 1.1rem;
 }
 
 /* Marco del video */
 .video-frame {
   position: relative;
+  padding-bottom: 56.25%;
   width: 100%;
-  padding-bottom: 56.25%; /* relación 16:9 */
-  height: 0;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .video-frame iframe {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   border: none;
 }
 
 /* =============================
-   RESPONSIVE DESIGN
+   RESPONSIVE
 ============================= */
 @media (max-width: 1024px) {
   .main-layout {
     flex-direction: column;
-    align-items: center;
+    gap: 25px;
   }
 
   .admin-column {
     position: relative;
-    top: auto;
     width: 100%;
     max-width: 600px;
-    order: -1; /* mueve el panel arriba en móviles */
-  }
-
-  .content-column {
-    width: 100%;
+    order: -1;
   }
 
   .video-item {
