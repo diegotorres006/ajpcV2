@@ -8,6 +8,7 @@ import { CatalogoComponent } from './pages/catalogo/catalogo.component';
 import { MantenimientolistComponent } from './pages/Mantenimientolist/mantenimientolist.component';
 import { RepotenciacionComponent } from './pages/Repotenciacionlist/repotenciacion.component';
 import { FabricacionComponent } from './pages/fabricacionlist/fabricacion.component';
+import { DomoticaComponent } from './pages/domotica/domotica.component';
 
 
 export const routes: Routes = [
@@ -58,6 +59,15 @@ export const routes: Routes = [
     {
       path: 'mantenimiento',
       component: MantenimientoComponent,
+    },
+
+     {
+      path: 'mantenimiento',
+      component: MantenimientoComponent,
+    },
+    {
+      path: 'domotica',
+      component: DomoticaComponent,
     },
 
   ];

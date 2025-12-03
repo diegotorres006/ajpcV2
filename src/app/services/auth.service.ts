@@ -30,6 +30,7 @@ export class AuthService {
     maintenance: collection(this.firestore, 'maintenanceVideos') as CollectionReference<Video>,
     potenciacion: collection(this.firestore, 'potenciacionVideos') as CollectionReference<Video>,
     fabricacion: collection(this.firestore, 'fabricacionVideos') as CollectionReference<Video>,
+    domotica: collection(this.firestore, 'domoticaVideos') as CollectionReference<Video>,
   };
 
   // --- Autenticación ---
@@ -65,25 +66,25 @@ export class AuthService {
   }
 
   // --- 🔧 Métodos genéricos para manejar videos por sección ---
-  private getCollection(section: 'maintenance' | 'potenciacion' | 'fabricacion'): CollectionReference<Video> {
+  private getCollection(section: 'maintenance' | 'potenciacion' | 'fabricacion' | 'domotica'): CollectionReference<Video> {
     return this.collections[section];
   }
 
-  async getVideos(section: 'maintenance' | 'potenciacion' | 'fabricacion'): Promise<Video[]> {
+  async getVideos(section: 'maintenance' | 'potenciacion' | 'fabricacion' | 'domotica'): Promise<Video[]> {
     const snapshot = await getDocs(this.getCollection(section));
     return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   }
 
-  async addVideo(section: 'maintenance' | 'potenciacion' | 'fabricacion', videoData: { title: string; url: string }): Promise<DocumentReference> {
+  async addVideo(section: 'maintenance' | 'potenciacion' | 'fabricacion' | 'domotica', videoData: { title: string; url: string }): Promise<DocumentReference> {
     return addDoc(this.getCollection(section), videoData);
   }
 
-  async updateVideo(section: 'maintenance' | 'potenciacion' | 'fabricacion', videoId: string, videoData: { title: string; url: string }): Promise<void> {
+  async updateVideo(section: 'maintenance' | 'potenciacion' | 'fabricacion' | 'domotica', videoId: string, videoData: { title: string; url: string }): Promise<void> {
     const videoDocRef = doc(this.firestore, `${section}Videos/${videoId}`);
     await updateDoc(videoDocRef, videoData);
   }
 
-  async deleteVideo(section: 'maintenance' | 'potenciacion' | 'fabricacion', videoId: string): Promise<void> {
+  async deleteVideo(section: 'maintenance' | 'potenciacion' | 'fabricacion' | 'domotica', videoId: string): Promise<void> {
     const videoDocRef = doc(this.firestore, `${section}Videos/${videoId}`);
     await deleteDoc(videoDocRef);
   }
