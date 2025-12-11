@@ -88,6 +88,26 @@ export class CatalogoComponent implements OnInit {
     this.applyFilters();
   }
 
+  // Categorías que quieres ocultar
+private ocultarCategorias: string[] = [];
+
+evitarCategorias(categorias: string[]): void {
+  this.ocultarCategorias = categorias.map(c => c.toLowerCase());
+
+  // Parche: usamos selectedCategory para forzar el refresco
+  this.selectedCategory = ''; 
+  this.applyFilters();
+
+  // Filtramos DESPUÉS de applyFilters (sin modificarlo)
+  this.filteredProducts = this.filteredProducts.filter((p: any) => {
+    const cat = (p.categoria || '').toLowerCase();
+    return !this.ocultarCategorias.includes(cat);
+  });
+}
+
+
+
+
   // Optional: Method to clear the category filter
   clearCategoryFilter(): void {
     this.selectedCategory = null;
