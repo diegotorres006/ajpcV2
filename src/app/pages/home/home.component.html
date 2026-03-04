@@ -1,61 +1,180 @@
-<section class="todo">
-  <section class="section-container">
-    <!-- División izquierda -->
-    <div class="left-side">
-      <div class="arriba">
-        <h1>JPC Electronics</h1>
-        <p>Todo lo que necesite en equipos médicos.</p>
-      </div>
-      <div class="imagen">
-        <button class="btnconimagen" routerLink="/mantenimientolist">
-          <img src="assets/imagenes/mantenimiento.jpg" alt="icono" class="icono">
-          <span class="texto">Mantenimiento</span>
-        </button>
-        <button class="btnconimagen" routerLink="/repotenciacionlist">
-          <img src="assets/imagenes/repotenciacion.jpg" alt="icono" class="icono">
-          <span class="texto">Repotenciación</span>
-        </button>
-        <button class="btnconimagen" routerLink="/fabricacionlist">
-          <img src="assets/imagenes/fabricacion.jpg" alt="icono" class="icono">
-          <span class="texto">Fabricación</span>
-        </button>
-        <button class="btnconimagen" routerLink="/domotica">
-          <img src="assets/imagenes/domo.jpg" alt="icono" class="icono">
-          <span class="texto">Domotica</span>
-        </button>
-        <button class="btnconimagen" routerLink="/disenolist">
-          <img src="assets/imagenes/inventor.jpg" alt="icono" class="icono">
-          <span class="texto">Diseño en Inventor</span>
-        </button>
-      </div>
-    </div>
+<div class="min-h-screen bg-[#f0f9ff] font-sans selection:bg-primary selection:text-white overflow-x-hidden">
 
-    <div class="hero-container" (click)="navigateToCatalogo('Ambulancia')">
-      <div class="men-container">
-        <img [src]="imagenActual" alt="Imagen ambulancia" class="imagen-rotativa">
+  <section class="relative bg-gradient-to-br from-[#0a1120] via-[#0f172a] to-[#1e293b] py-20 lg:py-28 overflow-hidden">
+    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/hexellence.png')]"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="flex flex-col lg:flex-row items-center gap-20">
+        <div class="flex-1 text-center lg:text-left space-y-8">
+          <div class="inline-flex items-center gap-2 bg-blue-500/10 backdrop-blur-md border border-blue-400/20 p-2 px-4 rounded-full shadow-lg">
+            <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+            <span class="text-xs font-bold text-blue-200 uppercase tracking-widest">Biomedical Engineering 2026</span>
+          </div>
+          <h1 class="text-6xl lg:text-8xl font-black text-white leading-none tracking-tighter">
+            JPC <span class="text-blue-500 font-light italic">Electronics</span>
+          </h1>
+          <p class="text-xl lg:text-2xl text-slate-300 font-medium max-w-2xl leading-relaxed">
+            Especialistas en repotenciación, mantenimiento y fabricación de tecnología médica de alto rendimiento.
+          </p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 pt-6">
+            <a routerLink="/mantenimiento" aria-label="Sección de Mantenimiento" class="group flex flex-col items-center bg-white/5 backdrop-blur-sm border border-white/10 p-4 rounded-[2rem] hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+              <div class="w-16 h-16 rounded-2xl overflow-hidden mb-3 border-2 border-white/10 group-hover:border-primary transition-colors">
+                <img src="assets/imagenes/mantenimiento.webp" alt="" width="60" height="60" class="w-full h-full object-cover">
+              </div>
+              <span class="text-[9px] font-black text-white group-hover:text-primary uppercase tracking-widest text-center">Mantenimiento</span>
+            </a>
+
+            <a routerLink="/repotenciacion" aria-label="Sección de Repotenciación" class="group flex flex-col items-center bg-white/5 backdrop-blur-sm border border-white/10 p-4 rounded-[2rem] hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+              <div class="w-16 h-16 rounded-2xl overflow-hidden mb-3 border-2 border-white/10 group-hover:border-primary transition-colors">
+                <img src="assets/imagenes/repotenciacion.webp" alt="" width="60" height="60" class="w-full h-full object-cover">
+              </div>
+              <span class="text-[9px] font-black text-white group-hover:text-primary uppercase tracking-widest text-center">Repotenciación</span>
+            </a>
+
+            <a routerLink="/fabricacion" aria-label="Sección de Fabricación" class="group flex flex-col items-center bg-white/5 backdrop-blur-sm border border-white/10 p-4 rounded-[2rem] hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+              <div class="w-16 h-16 rounded-2xl overflow-hidden mb-3 border-2 border-white/10 group-hover:border-primary transition-colors">
+                <img src="assets/imagenes/fabricacion.webp" alt="" width="60" height="60" class="w-full h-full object-cover">
+              </div>
+              <span class="text-[9px] font-black text-white group-hover:text-primary uppercase tracking-widest text-center">Fabricación</span>
+            </a>
+
+            <a routerLink="/diseno-inventor" aria-label="Sección de Diseño Inventor" class="group flex flex-col items-center bg-white/5 backdrop-blur-sm border border-white/10 p-4 rounded-[2rem] hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+              <div class="w-16 h-16 rounded-2xl overflow-hidden mb-3 border-2 border-white/10 group-hover:border-primary transition-colors">
+                <img src="assets/imagenes/inventor.webp" alt="" width="60" height="60" class="w-full h-full object-cover">
+              </div>
+              <span class="text-[9px] font-black text-white group-hover:text-primary uppercase tracking-widest text-center">Diseño Inventor</span>
+            </a>
+
+            <a routerLink="/domotica" aria-label="Sección de Domótica" class="group flex flex-col items-center bg-white/5 backdrop-blur-sm border border-white/10 p-4 rounded-[2rem] hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+              <div class="w-16 h-16 rounded-2xl overflow-hidden mb-3 border-2 border-white/10 group-hover:border-primary transition-colors">
+                <img src="assets/imagenes/domo.webp" alt="" width="60" height="60" class="w-full h-full object-cover">
+              </div>
+              <span class="text-[9px] font-black text-white group-hover:text-primary uppercase tracking-widest text-center">Domótica</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="flex-1 w-full max-w-2xl relative">
+          <div class="relative z-10 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.6)] rounded-[3rem] overflow-hidden border-8 border-white/5 cursor-pointer group" (click)="navigateToCatalogo('Ambulancia')">
+            <img [src]="imagenActual" alt="Unidades Móviles de Alta Complejidad equipadas por JPC" width="432" height="243" fetchpriority="high" loading="eager" class="w-full h-auto transition-transform duration-1000 group-hover:scale-110" />
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-10 mt-12">
+              <h2 class="text-white font-black text-3xl uppercase tracking-tighter">Unidades Móviles</h2>
+              <p class="text-blue-200 text-lg font-medium">Equipamiento de alta complejidad para emergencias.</p>
+            </div>
+          </div>
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/10 blur-3xl rounded-full animate-pulse"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Video Section -->
-  <section class="videos">
-    <video #videoPlayer class="video" autoplay loop playsinline muted preload="auto">
-      <source src="assets/ambulancia video.mp4" type="video/mp4">
-    </video>
-  </section>
-
-  <!-- Product Listing Section -->
-  <section class="product-listing">
-    <h2>Nuestros Productos</h2>
-    <div class="products-grid">
-      <div *ngFor="let product of filteredProducts" class="product-card">
-        <img [src]="product.foto" alt="{{ product.nombre }}" class="product-image">
-        <h3>{{ product.nombre }}</h3>
-        <p class="product-description">{{ product.descripcion }}</p>
-        <p class="product-category">Categoría: {{ product.categoria }}</p>
+  @defer (on viewport) {
+    <section class="py-28 bg-[#f8fafc] border-y border-blue-100 relative overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/dna.png')]"></div>
+      <div class="container mx-auto px-6 lg:px-16 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div class="relative">
+            <div class="absolute -top-16 -left-16 text-[16rem] font-black text-blue-50 leading-none select-none">JPC</div>
+            <h2 class="text-5xl lg:text-6xl font-black text-slate-900 uppercase tracking-tighter mb-10 relative z-10 leading-none">
+              Historia Oficial de <br><span class="text-blue-700">Ingeniería Clínica</span>
+            </h2>
+            <div class="space-y-6 text-slate-800 leading-relaxed relative z-10 font-medium text-lg">
+              <p>
+                Fundada con una visión clara, JPC Electronics se ha consolidado como un referente nacional en tecnología biomédica modular e inteligente en Ecuador.
+              </p>
+              <div class="p-8 bg-blue-50 border-l-8 border-blue-700 rounded-r-3xl shadow-inner italic text-slate-900">
+                "Nuestra ingeniería permite establecer departamentos certificados con soluciones propias para prolongar la vida útil de los equipos médicos."
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="card bg-slate-900 text-white p-10 rounded-[2.5rem] shadow-xl hover:scale-105 transition-transform duration-500">
+              <h3 class="text-blue-400 font-black uppercase tracking-widest text-xs mb-5">Nuestra Misión</h3>
+              <p class="text-base leading-relaxed opacity-90">
+                Diseñar y repotenciar equipos médicos modulares que integren tecnología avanzada, sostenibilidad y accesibilidad técnica.
+              </p>
+            </div>
+            <div class="card bg-blue-700 text-white p-10 rounded-[2.5rem] shadow-xl hover:scale-105 transition-transform duration-500 mt-8 md:mt-16">
+              <h3 class="text-white font-black uppercase tracking-widest text-xs mb-5">Nuestra Visión</h3>
+              <p class="text-base leading-relaxed opacity-90">
+                Ser líderes en innovación biomédica, desarrollando tecnologías escalables que impacten positivamente en la vida de los pacientes.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  } @placeholder {
+    <div class="min-h-[500px] bg-[#f0f9ff]"></div>
+  }
 
-  <router-outlet></router-outlet>
-</section>
+  @defer (on viewport) {
+    <section class="py-28 bg-[#f0f9ff]">
+      <div class="container mx-auto px-6 lg:px-16">
+        <div class="text-center mb-20 space-y-3">
+          <h2 class="text-5xl font-black text-slate-900 uppercase tracking-tighter">Enfoque Innovador</h2>
+          <p class="text-lg text-blue-700 font-medium max-w-xl mx-auto italic">Ingeniería para el sistema de salud del 2026.</p>
+          <div class="h-2 w-24 bg-blue-700 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="p-10 bg-white rounded-[2.5rem] border border-blue-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+            <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-5xl mb-8 group-hover:scale-110 transition-transform">📡</div>
+            <h3 class="font-black text-slate-900 uppercase mb-4 text-2xl tracking-tight">Telemonitoreo</h3>
+            <p class="text-base text-slate-800 font-medium leading-relaxed italic">Sistemas de monitoreo en tiempo real para un control constante de la salud clínica.</p>
+          </div>
+
+          <div class="p-10 bg-white rounded-[2.5rem] border border-blue-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+            <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-5xl mb-8 group-hover:scale-110 transition-transform">🖱️</div>
+            <h3 class="font-black text-slate-900 uppercase mb-4 text-2xl tracking-tight">Interfaces Táctiles</h3>
+            <p class="text-base text-slate-800 font-medium leading-relaxed italic">Control intuitivo diseñado para facilitar el trabajo crítico del personal médico.</p>
+          </div>
+
+          <div class="p-10 bg-white rounded-[2.5rem] border border-blue-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+            <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-5xl mb-8 group-hover:scale-110 transition-transform">🔌</div>
+            <h3 class="font-black text-slate-900 uppercase mb-4 text-2xl tracking-tight">Diseño Modular</h3>
+            <p class="text-base text-slate-800 font-medium leading-relaxed italic">Arquitectura escalable que permite una integración rápida de nuevos componentes.</p>
+          </div>
+
+          <div class="lg:col-span-3 bg-[#0a1120] rounded-[3rem] p-10 lg:p-20 text-white overflow-hidden relative group shadow-2xl mt-8">
+            <div class="flex flex-col md:flex-row items-center gap-16 relative z-10">
+              <div class="w-28 h-28 bg-blue-500/10 rounded-[2rem] flex items-center justify-center shadow-inner group-hover:rotate-6 transition-transform">
+                <svg class="w-14 h-14 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+              </div>
+              <div class="flex-1 space-y-6">
+                <h3 class="text-4xl lg:text-6xl font-black uppercase text-blue-400 tracking-tighter leading-none">
+                  Repotenciación Multimarca
+                </h3>
+                <p class="text-xl lg:text-2xl opacity-80 font-medium leading-relaxed max-w-4xl">
+                  Recuperamos equipos obsoletos aplicando automatización para extender su vida útil y reducir costos.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  } @placeholder {
+    <div class="min-h-[500px] bg-[#f0f9ff]"></div>
+  }
+
+  @defer (on viewport) {
+    <section class="w-full bg-[#050912] py-16">
+      <div class="container mx-auto px-6">
+        <div class="rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl relative group">
+          <video #videoPlayer class="w-full aspect-video object-cover opacity-60" autoplay loop playsinline muted preload="none" title="Video de presentación de Ingeniería Clínica de JPC Electronics">
+            <source src="assets/ambulancia video.mp4" type="video/mp4">
+          </video>
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none text-center p-10">
+            <span class="text-white/20 font-black text-6xl lg:text-[10rem] uppercase tracking-widest border-8 border-white/10 px-16 py-8 rounded-full rotate-[-5deg] select-none">BIOMEDICAL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  } @placeholder {
+    <div class="min-h-[400px] bg-[#050912]"></div>
+  }
+
+</div>

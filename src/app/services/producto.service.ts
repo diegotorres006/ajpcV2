@@ -15,7 +15,7 @@ export class ProductoService { // Renamed from PropertyService to ProductoServic
   private storage = inject(Storage);
   private auth = inject(Auth);
   private ngZone = inject(NgZone);  // 👈 inyectamos NgZone
-  
+
 
   getProducto(): Observable<Producto[]> {
     const productoRef = collection(this.firestore, 'Productos');
@@ -41,11 +41,11 @@ export class ProductoService { // Renamed from PropertyService to ProductoServic
     const docRef = doc(this.firestore, 'Productos', id); // Changed 'Producto' to 'Productos'
     return docData(docRef) as Observable<Producto>;
   }
-  
+
   actualizarProducto(id: string, data: any) {
     const docRef = doc(this.firestore, 'Productos', id); // Changed 'Producto' to 'Productos'
     return updateDoc(docRef, data);
-  }  
+  }
 
   eliminarProducto(id: string) {
     // Delete the storage image (if any) then delete the Firestore document
@@ -87,14 +87,14 @@ export class ProductoService { // Renamed from PropertyService to ProductoServic
 
   crearProducto(producto: Producto): Promise<void> {
     const propiedadesRef = collection(this.firestore, 'Productos'); // Changed 'Producto' to 'Productos'
-  
+
     return addDoc(propiedadesRef, {
       ...producto,
       // Removed ImagenFolder as it's not directly related to the 'foto' URL and producto.id would be undefined here.
     }).then(() => {});
   }
 
-  // Delete a file from Firebase Storage by its full path (e.g., 'productos/12345_file.jpg')
+  // Delete a file from Firebase Storage by its full path (e.g., 'productos/12345_file.webp')
   async deleteFile(filePath: string): Promise<void> {
     if (!filePath) return;
     try {
@@ -122,9 +122,9 @@ export class ProductoService { // Renamed from PropertyService to ProductoServic
       throw error;
     }
   }
-  
 
 
-  
-  
+
+
+
 }

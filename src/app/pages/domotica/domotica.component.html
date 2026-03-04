@@ -1,121 +1,95 @@
-<!-- ============================
- Contenedor Principal
-============================ -->
-<div class="main-layout">
-  
-  <!-- ===== Columna Izquierda: Contenido principal ===== -->
-  <div class="content-column">
-    <!-- Sección de información -->
-    <section class="maintenance-info">
-      <h2>Soluciones de Automatización para el Hogar</h2>
-      <p>
-        En JPC Electronics, nos especializamos en implementar soluciones de domótica diseñadas para transformar cualquier vivienda en un espacio más inteligente, seguro y eficiente. La domótica integra un conjunto de tecnologías que permiten automatizar y controlar diversos sistemas del hogar 'como iluminación, climatización, seguridad, electrodomésticos y más' para ofrecer una experiencia moderna y totalmente personalizada.
-</p>
-<p>
-Nuestro trabajo consiste en analizar las necesidades de cada cliente y desarrollar sistemas que optimizan la comodidad, el ahorro energético y la seguridad del hogar. Gracias a la automatización inteligente, los usuarios pueden gestionar sus dispositivos de forma centralizada, ya sea desde paneles, asistentes virtuales o aplicaciones móviles.
-</p>
-<p>
-Con nuestras soluciones, buscamos que cada vivienda funcione de manera más eficiente, adaptándose al estilo de vida de sus habitantes y mejorando su día a día mediante tecnología confiable, moderna y fácil de usar.
-      </p>
-    </section>
+<div class="min-h-screen bg-slate-50 font-sans pb-20">
 
-   <section class="videos-section">
-  <h2>Videos</h2>
-
-  <div *ngIf="videos.length === 0" class="no-videos">
-    <p>No hay videos disponibles en este momento.</p>
-  </div>
-
-  <div *ngIf="videos.length > 0" class="public-video-list">
-    <div *ngFor="let video of videos" class="video-item">
-      <h4>{{ video.title }}</h4>
-      <div class="video-frame">
-        <iframe
-          [src]="video.sanitizedUrl"
-          title="{{ video.title }}"
-          frameborder="0"
-          allowfullscreen>
-        </iframe>
+  <section class="hero min-h-[40vh] bg-gradient-to-br from-indigo-900 via-blue-800 to-slate-900 text-white">
+    <div class="hero-content text-center">
+      <div class="max-w-3xl animate-fade-in">
+        <h1 class="text-5xl font-black tracking-tighter uppercase mb-4">Domótica Residencial</h1>
+        <div class="badge badge-secondary font-bold">SMART HOME SOLUTIONS</div>
+        <p class="py-6 text-lg opacity-90 font-medium leading-relaxed">
+          Transformamos tu vivienda en un ecosistema inteligente, seguro y eficiente mediante tecnología de automatización centralizada.
+        </p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-  </div>
+  <section class="max-w-7xl mx-auto px-4 -mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="card bg-white shadow-2xl hover:shadow-indigo-200 transition-all duration-300 group">
+      <div class="card-body items-center text-center">
+        <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">💡</div>
+        <h2 class="card-title text-indigo-900 font-bold">Control Total</h2>
+        <p class="text-sm text-slate-600">Gestión de iluminación y climatización desde cualquier lugar.</p>
+      </div>
+    </div>
+    <div class="card bg-white shadow-2xl hover:shadow-indigo-200 transition-all duration-300 group">
+      <div class="card-body items-center text-center">
+        <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🛡️</div>
+        <h2 class="card-title text-indigo-900 font-bold">Seguridad Proactiva</h2>
+        <p class="text-sm text-slate-600">Sistemas de vigilancia y sensores inteligentes integrados.</p>
+      </div>
+    </div>
+    <div class="card bg-white shadow-2xl hover:shadow-indigo-200 transition-all duration-300 group">
+      <div class="card-body items-center text-center">
+        <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">📉</div>
+        <h2 class="card-title text-indigo-900 font-bold">Ahorro Energético</h2>
+        <p class="text-sm text-slate-600">Optimización del consumo mediante automatización de dispositivos.</p>
+      </div>
+    </div>
+  </section>
 
-  <!-- ===== Columna Derecha: Panel Admin ===== -->
-  <aside *ngIf="isAdmin" class="admin-column">
-    <section class="admin-video-update" [class.show-inputs]="showAdminSection">
-      <button class="toggle-admin-btn" (click)="toggleAdminSection()">
-        {{ showAdminSection ? 'Cerrar Panel de Administración' : 'Editar Videos' }}
-      </button>
-
-      <div *ngIf="showAdminSection" class="admin-inputs">
-        <h2>Administrar Videos</h2>
-
-        <!-- Agregar nuevo video -->
-        <div class="add-video-section">
-          <h3>Añadir Nuevo Video</h3>
-          <input
-            type="text"
-            [(ngModel)]="newVideoTitleForAdd"
-            placeholder="Título del Video"
-            class="admin-input"
-          >
-          <input
-            type="text"
-            [(ngModel)]="newVideoUrlForAdd"
-            placeholder="URL del Video (https://www.youtube.com/embed/...)"
-            class="admin-input"
-          >
-          <button class="add-btn" (click)="addVideo()">Añadir Video</button>
+  <aside *ngIf="isAdmin" class="max-w-7xl mx-auto mt-16 px-4">
+    <div class="collapse collapse-plus bg-white border border-indigo-100 shadow-xl overflow-visible">
+      <input type="checkbox" [(ngModel)]="showAdminSection" />
+      <div class="collapse-title text-xl font-bold text-indigo-700 flex items-center gap-3">
+        <span class="bg-indigo-600 text-white p-2 rounded-lg text-xs">ADMIN PANEL</span>
+        Gestión de Contenido Multimedia
+      </div>
+      <div class="collapse-content">
+        <div class="bg-slate-50 p-6 rounded-2xl border-2 border-dashed border-indigo-200 mt-4">
+          <h3 class="font-bold mb-4">Añadir Nuevo Video de Proyecto</h3>
+          <div class="flex flex-col md:flex-row gap-4">
+            <input type="text" [(ngModel)]="newVideoTitleForAdd" placeholder="Título del proyecto" class="input input-bordered input-primary flex-1 bg-white" />
+            <input type="text" [(ngModel)]="newVideoUrlForAdd" placeholder="Enlace de YouTube" class="input input-bordered input-primary flex-1 bg-white" />
+            <button class="btn btn-primary px-10 shadow-lg" (click)="addVideo()">Subir</button>
+          </div>
         </div>
+      </div>
+    </div>
+  </aside>
 
-        <!-- Lista de videos actuales -->
-        <div class="admin-video-list" *ngIf="videos.length > 0">
-          <h3>Videos Actuales</h3>
-          <div *ngFor="let video of videos" class="video-item">
-            <div *ngIf="editingVideoId !== video.id" class="video-display">
-              <h4>{{ video.title }}</h4>
-              <iframe
-                width="400"
-                height="225"
-                [src]="video.sanitizedUrl"
-                frameborder="0"
-                allowfullscreen>
-              </iframe>
-              <div class="video-actions">
-                <button class="edit-btn" (click)="startEdit(video)">Editar</button>
-                <button class="delete-btn" (click)="deleteVideo(video.id!)">Eliminar</button>
-              </div>
-            </div>
+  <section class="max-w-7xl mx-auto mt-20 px-4">
+    <div class="flex items-center gap-4 mb-12">
+      <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tight">Portafolio de Automatización</h2>
+      <div class="h-1 bg-indigo-100 flex-1 rounded-full"></div>
+    </div>
 
-            <!-- Formulario de edición -->
-            <div *ngIf="editingVideoId === video.id" class="video-edit-form">
-              <input
-                type="text"
-                [(ngModel)]="currentVideoTitle"
-                placeholder="Nuevo título"
-                class="admin-input"
-              >
-              <input
-                type="text"
-                [(ngModel)]="currentVideoUrl"
-                placeholder="Nueva URL del video"
-                class="admin-input"
-              >
-              <div class="video-actions">
-                <button class="save-btn" (click)="saveVideo()">Guardar Cambios</button>
-                <button class="cancel-btn" (click)="cancelEdit()">Cancelar</button>
-              </div>
-            </div>
+    <div *ngIf="videos.length === 0" class="alert shadow-lg bg-indigo-50 border-indigo-200">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-indigo-600 shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <span class="text-indigo-800 font-medium">No hay demostraciones de domótica disponibles actualmente.</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-12">
+      <div *ngFor="let video of videos" class="card bg-white shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden group">
+        <figure class="aspect-video relative bg-black">
+          <iframe [src]="video.sanitizedUrl" class="w-full h-full border-none opacity-90 group-hover:opacity-100 transition-opacity" allowfullscreen></iframe>
+        </figure>
+        <div class="card-body p-6">
+          <h3 class="card-title text-indigo-950 font-black">{{ video.title }}</h3>
+          <div *ngIf="isAdmin" class="card-actions justify-end mt-4 border-t pt-4 gap-2">
+            <button class="btn btn-ghost btn-sm text-indigo-600 font-bold" (click)="startEdit(video)">Editar</button>
+            <button class="btn btn-ghost btn-sm text-error font-bold" (click)="deleteVideo(video.id!)">Eliminar</button>
           </div>
         </div>
 
-        <div *ngIf="videos.length === 0" class="no-videos">
-          <p>No hay videos disponibles actualmente.</p>
+        <div *ngIf="editingVideoId === video.id" class="absolute inset-0 bg-white/95 backdrop-blur-md z-20 flex flex-col items-center justify-center p-8 animate-in fade-in zoom-in">
+          <h4 class="font-black text-indigo-900 mb-4">Actualizar Información</h4>
+          <input [(ngModel)]="currentVideoTitle" class="input input-bordered input-indigo w-full mb-3" />
+          <input [(ngModel)]="currentVideoUrl" class="input input-bordered input-indigo w-full mb-6" />
+          <div class="flex gap-3">
+            <button class="btn btn-success text-white shadow-md" (click)="saveVideo()">Guardar</button>
+            <button class="btn btn-ghost" (click)="cancelEdit()">Cancelar</button>
+          </div>
         </div>
       </div>
-    </section>
-  </aside>
-</div>
+    </div>
+  </section>
+</div>s

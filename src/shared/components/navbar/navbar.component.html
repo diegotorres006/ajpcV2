@@ -1,0 +1,67 @@
+<nav class="bg-white/95 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-100 shadow-sm selection:bg-primary selection:text-white">
+  <div class="max-w-7xl mx-auto px-6 h-20 relative flex items-center justify-between">
+
+    <a routerLink="/home" class="flex items-center gap-4 cursor-pointer group w-1/3">
+      <div class="bg-[#0a1120] rounded-2xl w-14 h-14 flex items-center justify-center p-2.5 transition-all group-hover:scale-105 duration-300 shadow-lg shadow-blue-900/10">
+          <img src="assets/pestaJPC.webp" alt="" width="36" height="36" class="w-full h-full object-contain">
+      </div>
+      <div class="flex flex-col">
+        <h1 class="text-xl font-black text-slate-900 leading-none tracking-tighter uppercase">JPC</h1>
+        <p class="text-[9px] font-bold text-primary tracking-[0.3em] uppercase opacity-80 mt-1">Electronics</p>
+      </div>
+    </a>
+
+    <div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-8">
+      <a routerLink="/home" routerLinkActive="text-primary" class="text-[11px] font-black text-slate-500 hover:text-primary transition-all uppercase tracking-widest leading-none py-4">Inicio</a>
+      <a routerLink="/catalogo" routerLinkActive="text-primary" class="text-[11px] font-black text-slate-500 hover:text-primary transition-all uppercase tracking-widest leading-none py-4">Catálogo</a>
+
+      <div class="dropdown dropdown-hover">
+        <div tabindex="0" role="button" class="text-[11px] font-black text-slate-500 hover:text-primary transition-all uppercase tracking-widest flex items-center gap-1 cursor-pointer leading-none py-4">
+          Especialidades
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content z-[1] menu p-3 shadow-2xl bg-white rounded-2xl w-64 border border-slate-50 animate-in fade-in slide-in-from-top-2">
+          <li><a routerLink="/mantenimiento" class="font-bold text-slate-600 hover:bg-slate-50 py-3">🛠 Mantenimiento</a></li>
+          <li><a routerLink="/repotenciacion" class="font-bold text-slate-600 hover:bg-slate-50 py-3">🚀 Repotenciación</a></li>
+          <li><a routerLink="/diseno-inventor" class="font-bold text-slate-600 hover:bg-slate-50 py-3">⚙️ Diseño Inventor</a></li>
+          <li><a routerLink="/fabricacion" class="font-bold text-slate-600 hover:bg-slate-50 py-3">🏭 Fabricación</a></li>
+          <li><a routerLink="/domotica" class="font-bold text-slate-600 hover:bg-slate-50 py-3">🏠 Domótica</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-end w-1/3">
+      <div *ngIf="isLoggedIn" class="flex items-center gap-3 animate-fade-in mr-2">
+        <div class="hidden lg:block text-right">
+          <p class="text-[10px] font-black text-slate-400 uppercase leading-none">Admin</p>
+          <p class="text-[9px] font-bold text-success uppercase">Sesión Iniciada</p>
+        </div>
+        <button (click)="onLogout.emit()" aria-label="Cerrar sesión" class="btn btn-ghost btn-circle btn-sm text-error hover:bg-red-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+        </button>
+      </div>
+
+      <div class="md:hidden dropdown dropdown-end">
+        <button tabindex="0" class="btn btn-ghost btn-circle text-slate-900" aria-label="Menú principal">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+        </button>
+        <ul tabindex="0" class="dropdown-content z-[1] menu p-4 shadow-2xl bg-white rounded-3xl w-64 border border-slate-100 mt-4">
+          <li><a routerLink="/home" class="font-bold text-slate-600 py-3">Inicio</a></li>
+          <li><a routerLink="/catalogo" class="font-bold text-slate-600 py-3">Catálogo</a></li>
+          <li>
+            <details>
+              <summary class="font-bold text-slate-600 py-3">Especialidades</summary>
+              <ul class="p-2 gap-1 bg-slate-50 rounded-2xl mt-2">
+                <li><a routerLink="/mantenimiento">Mantenimiento</a></li>
+                <li><a routerLink="/repotenciacion">Repotenciación</a></li>
+                <li><a routerLink="/diseno-inventor">Diseño Inventor</a></li>
+                <li><a routerLink="/fabricacion">Fabricación</a></li>
+                <li><a routerLink="/domotica">Domótica</a></li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

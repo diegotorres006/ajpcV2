@@ -1,33 +1,21 @@
-<header class="custom-toolbar" [class.shrink]="isShrunk">
-  <!-- LOGO -->
-  <div class="logo-container">
-    <div class="imagen-logo" (click)="goToInicio()">
-      <img src="assets/imagenes/logo.png" alt="Logo principal">
-    </div>
+<div class="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-primary selection:text-white">
 
-    <!-- BOTÓN HAMBURGUESA -->
-    <button class="hamburger" (click)="toggleMobileMenu()" aria-label="Abrir menú">
-      <span [class.open]="mobileMenuOpen"></span>
-      <span [class.open]="mobileMenuOpen"></span>
-      <span [class.open]="mobileMenuOpen"></span>
-    </button>
-  </div>
+  <app-navbar
+    *ngIf="showLayout"
+    [isLoggedIn]="isLoggedIn"
+    (onLogin)="openLoginModal()"
+    (onLogout)="cerrarSesion()">
+  </app-navbar>
 
-  <!-- MENÚ PRINCIPAL -->
-  <nav class="botones" [class.mobile-open]="mobileMenuOpen">
-    <div class="botones-rec">
-      <button class="nav-btn" (click)="goToInicio()">Inicio</button>
-      <button class="nav-btn" (click)="goToCatalogo()">Catálogo</button>
-      <button class="nav-btn" (click)="goToContacto()">Contacto</button>
-      <button class="nav-btn" *ngIf="!isLoggedIn" (click)="goToAcercaDe()">Acerca de</button>
-      <button class="nav-btn" *ngIf="isLoggedIn" (click)="goToMantenimiento()">Mantenimiento</button>
-      <button class="nav-btn btn-accent" *ngIf="!isLoggedIn" (click)="openLoginModal()">Iniciar sesión</button>
-      <button class="nav-btn btn-accent" *ngIf="isLoggedIn" (click)="cerrarSesion()">Cerrar sesión</button>
-    </div>
-  </nav>
+  <main class="flex-grow animate-fade-in">
+    <router-outlet></router-outlet>
+  </main>
 
-  <!-- MODAL LOGIN -->
-  <app-login-modal *ngIf="showLoginModal" (close)="closeLoginModal()"></app-login-modal>
-</header>
+  <app-footer *ngIf="showLayout"></app-footer>
 
-<router-outlet></router-outlet>
+  <app-login-modal
+    *ngIf="showLoginModal"
+    (close)="closeLoginModal()">
+  </app-login-modal>
+
+</div>

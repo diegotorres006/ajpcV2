@@ -13,13 +13,13 @@ interface VideoDisplay {
 }
 
 @Component({
-  selector: 'app-domotica',
+  selector: 'app-repotenciacion',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './domotica.component.html',
-  styles: [] // 🟢 Estilo 100% en el HTML con Tailwind/DaisyUI
+  templateUrl: './repotenciacion.component.html',
+  styles: []
 })
-export class DomoticaComponent implements OnInit {
+export class RepotenciacionComponent implements OnInit {
   videos: VideoDisplay[] = [];
   isAdmin = false;
   showAdminSection = false;
@@ -31,13 +31,13 @@ export class DomoticaComponent implements OnInit {
   currentVideoTitle = '';
   currentVideoUrl = '';
 
-  // 🟢 Sección mapeada correctamente para la colección de Firebase
-  private readonly section: 'domotica' = 'domotica';
+  private readonly section: 'potenciacion' = 'potenciacion';
 
   constructor(private domSanitizer: DomSanitizer, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadVideos();
+
     this.authService.authState$.subscribe(async (user: User | null) => {
       this.isAdmin = user ? await this.authService.checkUserRole(user.uid) : false;
     });
@@ -47,7 +47,7 @@ export class DomoticaComponent implements OnInit {
     if (!url) return '';
     if (url.includes('v=')) return `https://www.youtube.com/embed/${url.split('v=')[1].split('&')[0]}`;
     if (url.includes('youtu.be/')) return `https://www.youtube.com/embed/${url.split('youtu.be/')[1].split('?')[0]}`;
-    return url.includes('embed/') ? url : url;
+    return url;
   }
 
   async loadVideos(): Promise<void> {
@@ -60,16 +60,21 @@ export class DomoticaComponent implements OnInit {
         sanitizedUrl: this.domSanitizer.bypassSecurityTrustResourceUrl(this.convertToEmbedUrl(video.url))
       }));
     } catch (error) {
-      console.error('Error loading domotica videos:', error);
+      console.error(error);
     }
   }
 
-  // Los métodos addVideo, saveVideo y deleteVideo se mantienen con la lógica original de Firebase
   async addVideo(): Promise<void> {
     if (!this.newVideoTitleForAdd || !this.newVideoUrlForAdd) return;
-    await this.authService.addVideo(this.section, { title: this.newVideoTitleForAdd, url: this.convertToEmbedUrl(this.newVideoUrlForAdd) });
-    this.newVideoTitleForAdd = ''; this.newVideoUrlForAdd = '';
-    await this.loadVideos();
+    try {
+      const embedUrl = this.convertToEmbedUrl(this.newVideoUrlForAdd);
+      await this.authService.addVideo(this.section, { title: this.newVideoTitleForAdd, url: embedUrl });
+      this.newVideoTitleForAdd = '';
+      this.newVideoUrlForAdd = '';
+      await this.loadVideos();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   startEdit(video: VideoDisplay): void {
@@ -78,23 +83,34 @@ export class DomoticaComponent implements OnInit {
     this.currentVideoUrl = video.rawUrl;
   }
 
-  cancelEdit(): void { this.editingVideoId = null; }
+  cancelEdit(): void {
+    this.editingVideoId = null;
+    this.currentVideoTitle = '';
+    this.currentVideoUrl = '';
+  }
 
   async saveVideo(): Promise<void> {
-    if (this.editingVideoId) {
+    if (!this.currentVideoTitle || !this.currentVideoUrl || !this.editingVideoId) return;
+    try {
+      const embedUrl = this.convertToEmbedUrl(this.currentVideoUrl);
       await this.authService.updateVideo(this.section, this.editingVideoId, {
         title: this.currentVideoTitle,
-        url: this.convertToEmbedUrl(this.currentVideoUrl)
+        url: embedUrl
       });
       this.cancelEdit();
       await this.loadVideos();
+    } catch (error) {
+      console.error(error);
     }
   }
 
   async deleteVideo(videoId: string): Promise<void> {
-    if (confirm('¿Eliminar demostración de domótica?')) {
+    if (!confirm('¿Seguro que deseas eliminar este registro técnico?')) return;
+    try {
       await this.authService.deleteVideo(this.section, videoId);
       await this.loadVideos();
+    } catch (error) {
+      console.error(error);
     }
   }
 

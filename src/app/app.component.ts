@@ -1,109 +1,71 @@
-import { Component, HostListener } from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';
-import { Producto } from '../models/producto';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common'; 
-import { LoginModalComponent } from './pages/login-modal/login-modal.component'; 
+import { Component, OnInit, inject } from '@angular/core';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { filter } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
+import { NavbarComponent } from '../shared/components/navbar/navbar.component';
+import { FooterComponent } from '../shared/components/footer/footer.component';
+import { LoginModalComponent } from './pages/login-modal/login-modal.component';
 
 @Component({
-    selector: 'app-root',
-    standalone: true,
-    imports: [LoginModalComponent, CommonModule, RouterModule],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.css'
+  selector: 'app-root',
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    NavbarComponent,
+    FooterComponent,
+    LoginModalComponent
+  ],
+  templateUrl: './app.component.html'
 })
-export class AppComponent {
-  title = 'inmobiliariafenix';
-  properties: Producto[] = [];
-  showLoginModal: boolean = false;
+export class AppComponent implements OnInit {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   isLoggedIn = false;
-  isShrunk = false;
+  showLoginModal = false;
+  showLayout = true;
 
-  // NUEVO: variable para menú móvil
-  mobileMenuOpen: boolean = false;
-
-  constructor(private router: Router, private authService: AuthService) {
-    this.authService.authState$.subscribe(user => {
+  ngOnInit(): void {
+    this.authService.authState$.subscribe((user) => {
       this.isLoggedIn = !!user;
+      this.verificarAcceso(this.router.url);
+    });
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.showLayout = !event.urlAfterRedirects.includes('/admin');
+      this.verificarAcceso(event.urlAfterRedirects);
     });
   }
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.dropdown')) {
-      this.dropdownAbierto = false;
+  verificarAcceso(url: string): void {
+    const esAdmin = url.includes('/admin');
+
+    if (esAdmin && !this.isLoggedIn) {
+      this.openLoginModal();
+    } else if (esAdmin && this.isLoggedIn) {
+      this.showLoginModal = false;
     }
   }
 
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.isShrunk = window.scrollY > 5;
-  }
-
-  // ===== Métodos de navegación =====
-  goToInicio(): void {
-    this.router.navigateByUrl('/home');
-    this.closeMobileMenu(); // cerrar menú en móvil al navegar
-  }
-
-  goToContacto(): void {
-    this.router.navigateByUrl('/contacto');
-    this.closeMobileMenu();
-  }
-
-  goToAcercaDe(): void {
-    this.router.navigateByUrl('/acerca');
-    this.closeMobileMenu();
-  }
-
-  goToMantenimiento(): void {
-    this.router.navigateByUrl('/mantenimiento');
-    this.closeMobileMenu();
-  }
-
-  goToCatalogo(): void {
-    this.router.navigateByUrl('/catalogo');
-    this.closeMobileMenu();
-  }
-
-  // ===== Modal Login =====
-  openLoginModal() {
-    console.log("Modal abierto");
+  openLoginModal(): void {
     this.showLoginModal = true;
-    this.closeMobileMenu(); // cerrar menú si estaba abierto
   }
 
-  closeLoginModal() {
+  closeLoginModal(): void {
     this.showLoginModal = false;
+    if (!this.showLayout && !this.isLoggedIn) {
+      this.router.navigate(['/home']);
+    }
   }
 
-  cerrarSesion() {
-    this.authService.logOut();
-    this.closeMobileMenu(); // cerrar menú al cerrar sesión
-  }
-
-  // ===== Dropdown =====
-  dropdownAbierto = false;
-
-  toggleDropdown() {
-    this.dropdownAbierto = !this.dropdownAbierto;
-  }
-
-  filtrarPorTipo(tipo: string) {
-    this.dropdownAbierto = false;
-    this.router.navigate(['/catalogo'], {
-      queryParams: { propertyType: tipo }
+  cerrarSesion(): void {
+    this.authService.logOut().then(() => {
+      this.isLoggedIn = false;
+      this.router.navigate(['/home']);
     });
-  }
-
-  // ===== NUEVO: Menú hamburguesa móvil =====
-  toggleMobileMenu() {
-    this.mobileMenuOpen = !this.mobileMenuOpen;
-  }
-
-  closeMobileMenu() {
-    this.mobileMenuOpen = false;
   }
 }

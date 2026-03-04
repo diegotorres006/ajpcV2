@@ -12,12 +12,12 @@ interface VideoDisplay {
 }
 
 @Component({
-  selector: 'app-mantenimiento',
+  selector: 'app-diseno-inventor',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './mantenimiento.component.html'
+  templateUrl: './diseno-inventor.component.html'
 })
-export class MantenimientoComponent implements OnInit {
+export class DisenoInventorComponent implements OnInit {
   private authService = inject(AuthService);
   private domSanitizer = inject(DomSanitizer);
 
@@ -36,7 +36,7 @@ export class MantenimientoComponent implements OnInit {
 
   async loadVideos(): Promise<void> {
     try {
-      const firebaseVideos = await this.authService.getVideos('maintenance' as any);
+      const firebaseVideos = await this.authService.getVideos('design' as any);
       this.videos = firebaseVideos.map(video => ({
         id: video.id,
         title: video.title,

@@ -1,57 +1,53 @@
-import { Component, Output, EventEmitter  } from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { FormsModule } from '@angular/forms';  // Importa FormsModule
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login-modal',
   standalone: true,
-  imports: [
-    FormsModule  // Asegúrate de incluir FormsModule aquí
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login-modal.component.html',
-  styleUrls: ['./login-modal.component.css']
+  styles: []
 })
 export class LoginModalComponent {
-  email: string = '';
-  password: string = '';
-    // Output para enviar el evento al componente padre (cerrar modal)
-    @Output() close = new EventEmitter<void>();
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  constructor(private authService: AuthService, private router: Router) {}
+  email = '';
+  password = '';
+
+  @Output() close = new EventEmitter<void>();
 
   login() {
     if (this.email && this.password) {
       this.authService.logInWithEmailAndPassword({ email: this.email, password: this.password })
         .then((isAdmin) => {
           if (isAdmin) {
-            alert('✅ Ingreso exitoso');
             this.close.emit();
-            // Si es admin, redirigir al panel de administración
-            this.router.navigate(['/mantenimiento']);
+            this.router.navigate(['/admin']);
           } else {
-            // Si no es admin, redirigir a la página de inicio
             this.router.navigate(['/home']);
           }
         })
         .catch((error) => {
-          console.error('Error de login:', error);
+          console.error(error);
           alert(error.message);
         });
     } else {
-      alert('Por favor ingrese los datos');
-    }}
+      alert('Credenciales incompletas');
+    }
+  }
 
   closeModal(event: MouseEvent) {
-    const modalContent = document.querySelector('.modal-content');
-    if (!modalContent?.contains(event.target as Node)) {
-      this.close.emit();  // Emitir el evento de cierre
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('modal')) {
+      this.close.emit();
     }
   }
 
   stopPropagation(event: MouseEvent) {
-    event.stopPropagation();  // Evitar que el clic dentro del modal cierre el modal
+    event.stopPropagation();
   }
-
-  
 }

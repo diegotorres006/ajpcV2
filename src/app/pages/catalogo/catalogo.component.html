@@ -1,68 +1,132 @@
-<div class="catalog-container">
-  <!-- === Barra lateral de búsqueda === -->
-  <aside class="search-sidebar">
-    <h2>Buscar Productos</h2>
+<div class="min-h-screen bg-slate-100 pb-20 font-sans selection:bg-primary selection:text-white">
 
-    <div class="search-filters">
-      <input
-        type="text"
-        id="searchTerm"
-        placeholder=" Buscar producto..."
-        [(ngModel)]="searchTerm"
-      />
-
-      <div class="category-buttons">
-        <button class="filter-button active" (click)="filtrarPorCategoria('')">Todos</button>
-        <button class="filter-button" (click)="filtrarPorCategoria('Ambulancia')">Ambulancias</button>
-        <button class="filter-button" (click)="filtrarPorCategoria('Equipo Medico')">Equipo Médico</button>
-        <button class="filter-button" (click)="filtrarPorCategoria('Utileria Medica')">Utilería Médica</button>
-        <button class="filter-button" (click)="filtrarPorCategoria('Mobiliario Oficina')">Mobiliario Oficina</button>
-        <button class="filter-button" (click)="filtrarPorCategoria('Diagnostico')">Diagnostico y Ayudas Medicas</button>
-        <button class="filter-button" (click)="filtrarPorCategoria('Mobilirio Medico')">Mobiliario Medico</button>
-        <button class="filter-button" (click)="evitarCategorias(['Ambulancia','Equipo Medico','Utileria Medica','Diagnostico','Mobiliario Medico','Mobiliario Oficina'])">Otros</button>
+  <header class="bg-white border-b border-slate-200 py-10 mb-10 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div>
+        <h1 class="text-4xl font-black text-slate-900 tracking-tighter uppercase leading-none">Catálogo Técnico</h1>
+        <p class="text-sm font-bold text-primary italic mt-2">Tecnología médica certificada para el sector salud.</p>
       </div>
-    </div>
-
-    <button class="search-button" (click)="search()">Buscar</button>
-  </aside>
-
-  <!-- === Sección principal del catálogo === -->
-  <main class="catalog-content">
-    <div class="catalog-header">
-      <h2>Catálogo de Productos</h2>
-      <p *ngIf="filteredProducts.length > 0">{{ filteredProducts.length }} resultados encontrados</p>
-      <p *ngIf="filteredProducts.length === 0" class="no-results">No se encontraron productos.</p>
-    </div>
-
-    <div class="catalog-items">
-      <div *ngFor="let product of filteredProducts" class="catalog-item" (click)="selectProduct(product)">
-        <div class="media-container">
-          <img [src]="product.foto" [alt]="product.nombre" />
-        </div>
-        <div class="info">
-          <h3>{{ product.nombre }}</h3>
-          <p>{{ product.descripcion }}</p>
+      <div class="stats shadow-2xl bg-[#0a1120] text-white border-none rounded-2xl overflow-hidden">
+        <div class="stat py-3 px-8">
+          <div class="stat-title text-[10px] font-black uppercase text-blue-300 tracking-widest">Equipos Disponibles</div>
+          <div class="stat-value text-3xl tracking-tighter">{{ filteredProducts.length }}</div>
         </div>
       </div>
     </div>
-  </main>
-</div>
+  </header>
 
-<!-- Modal -->
-<div *ngIf="selectedProduct" class="modal-overlay" (click)="closeModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <span class="close-button" (click)="closeModal()">&times;</span>
-    <div class="modal-body">
-      <div class="modal-image">
-        <img [src]="selectedProduct.foto" alt="{{ selectedProduct.nombre }}">
+  <div class="max-w-7xl mx-auto px-6 lg:flex gap-8">
+
+    <aside class="lg:w-72 flex-shrink-0 space-y-10 mb-12 lg:mb-0">
+      <div class="form-control">
+        <label class="label font-black text-[11px] uppercase text-slate-400 tracking-[0.2em] mb-1">Búsqueda Técnica</label>
+        <div class="relative group">
+          <input type="text" [(ngModel)]="searchTerm" (input)="applyFilters()" placeholder="Ej: Monitor, Ambulancia..."
+                 class="input input-bordered w-full h-14 bg-white font-bold rounded-2xl border-slate-200 focus:ring-4 focus:ring-primary/10 transition-all pl-12" />
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xl">🔍</span>
+        </div>
       </div>
-      <div class="modal-details">
-        <h2>{{ selectedProduct.nombre }}</h2>
-        <p><strong>Tipo:</strong> {{ selectedProduct.tipo }}</p>
-        <p><strong>Categoría:</strong> {{ selectedProduct.categoria }}</p>
-        <p><strong>Descripción:</strong> {{ selectedProduct.descripcion }}</p>
-        <!-- Agrega más detalles del producto si es necesario -->
+
+      <div>
+        <label class="label font-black text-[11px] uppercase text-slate-400 tracking-[0.2em] mb-1">Especialidades</label>
+        <ul class="menu bg-white border border-slate-200 rounded-[2rem] p-3 shadow-xl space-y-1">
+          <li><a (click)="filtrarPorCategoria('')" [class.active]="selectedCategory === ''" class="font-bold py-3">🌐 Ver Todo</a></li>
+          <li><a (click)="filtrarPorCategoria('Ambulancia')" class="font-bold py-3">🚑 Ambulancias</a></li>
+          <li><a (click)="filtrarPorCategoria('Equipo Medico')" class="font-bold py-3">🩺 Equipo Médico</a></li>
+          <li><a (click)="filtrarPorCategoria('Utileria Medica')" class="font-bold py-3">📦 Utilería Médica</a></li>
+          <li><a (click)="filtrarPorCategoria('Mobiliario Oficina')" class="font-bold py-3">🪑 Mobiliario Oficina</a></li>
+          <li><a (click)="filtrarPorCategoria('Diagnostico')" class="font-bold py-3">🔬 Diagnóstico</a></li>
+          <li><a (click)="filtrarPorCategoria('Mobilirio Medico')" class="font-bold py-3">🏥 Mobiliario Médico</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="flex-1">
+      <div *ngIf="filteredProducts.length === 0" class="alert bg-white shadow-xl rounded-3xl border-l-8 border-warning p-8">
+        <div class="flex items-center gap-4">
+          <span class="text-4xl">⚠️</span>
+          <div>
+            <h3 class="font-black uppercase tracking-tight text-slate-900">Sin coincidencias técnicas</h3>
+            <p class="text-sm font-medium text-slate-500 italic">No se encontraron equipos bajo estos criterios de búsqueda.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div *ngFor="let product of filteredProducts" (click)="selectProduct(product)"
+             class="group card bg-white shadow-lg hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] hover:-translate-y-3 transition-all duration-500 border border-slate-100 overflow-hidden rounded-[2.5rem] cursor-pointer">
+
+          <figure class="bg-slate-50 relative aspect-square overflow-hidden p-6">
+            <img [src]="product.foto" [alt]="product.nombre"
+                 class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-1000" />
+            <div class="absolute top-4 right-4 badge badge-primary font-black shadow-2xl uppercase text-[9px] p-3 rounded-lg border-none">
+              {{ product.categoria }}
+            </div>
+          </figure>
+
+          <div class="card-body p-8 flex flex-col justify-between min-h-[220px]">
+            <div>
+              <h3 class="text-lg font-black text-[#0a1120] uppercase tracking-tighter leading-tight group-hover:text-primary transition-colors mb-3">
+                {{ product.nombre }}
+              </h3>
+              <p class="text-xs text-slate-500 font-medium leading-relaxed italic line-clamp-2">
+                {{ product.descripcion }}
+              </p>
+            </div>
+
+            <div class="flex items-center justify-between mt-6 pt-6 border-t border-slate-100">
+              <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Estado: Operativo</span>
+              <span class="btn btn-ghost btn-xs font-black text-primary uppercase tracking-widest p-0 hover:bg-transparent">
+                Ficha <span class="ml-1">→</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <input type="checkbox" id="product_modal" class="modal-toggle" [checked]="selectedProduct !== null" />
+  <div class="modal backdrop-blur-sm" (click)="closeModal()">
+    <div class="modal-box w-11/12 max-w-6xl p-0 overflow-hidden bg-white rounded-[3rem] shadow-2xl border border-slate-100 flex flex-col md:flex-row" (click)="$event.stopPropagation()">
+      <button (click)="closeModal()" class="btn btn-circle btn-ghost absolute right-4 top-4 z-20 bg-slate-100 md:bg-transparent">✕</button>
+
+      <div class="md:w-1/2 bg-slate-50 p-10 flex items-center justify-center min-h-[400px]">
+        <img [src]="selectedProduct?.foto" [alt]="selectedProduct?.nombre" class="max-w-full max-h-[450px] object-contain drop-shadow-xl" />
+      </div>
+
+      <div class="md:w-1/2 p-10 md:p-16 flex flex-col justify-center">
+        <div class="badge badge-primary font-black uppercase tracking-widest mb-6 px-4 py-3 rounded-lg border-none">{{ selectedProduct?.categoria }}</div>
+
+        <h2 class="text-4xl md:text-5xl font-black text-[#0a1120] uppercase leading-none mb-8">
+          {{ selectedProduct?.nombre }}
+        </h2>
+
+        <div class="space-y-6 mb-10">
+          <div>
+            <span class="text-xs font-black text-slate-400 uppercase tracking-widest block mb-1">Tecnología de punta</span>
+            <p class="text-2xl font-bold text-slate-800">{{ selectedProduct?.tipo }}</p>
+          </div>
+
+          <div>
+            <span class="text-xs font-black text-slate-400 uppercase tracking-widest block mb-1">Especificaciones Técnicas</span>
+            <p class="text-lg text-slate-600 leading-relaxed font-medium">
+              {{ selectedProduct?.descripcion }}
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-auto pt-8 border-t border-slate-100 flex items-center gap-4">
+          <div class="w-14 h-14 bg-[#0a1120] rounded-xl flex items-center justify-center p-2">
+            <img src="assets/pestaJPC.webp" class="w-full h-full object-contain">
+          </div>
+          <div>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Validación Técnica</p>
+            <p class="text-sm font-black text-slate-900 uppercase">JPC Electronics S.A.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
 </div>

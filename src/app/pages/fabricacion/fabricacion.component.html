@@ -1,0 +1,130 @@
+<div class="min-h-screen bg-slate-50 font-sans pb-20">
+
+  <section class="hero min-h-[45vh] bg-gradient-to-tr from-slate-900 via-blue-900 to-cyan-800 text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.webp')]"></div>
+    <div class="hero-content text-center relative z-10">
+      <div class="max-w-4xl animate-fade-in">
+        <h1 class="text-6xl font-black tracking-tighter uppercase mb-4 leading-none">Fabricación Biomédica</h1>
+        <div class="flex justify-center gap-2 mb-6">
+          <div class="badge badge-primary font-bold px-4 py-3">ISO CERTIFIED STYLE</div>
+          <div class="badge badge-outline text-white font-bold px-4 py-3">CALIDAD QUIRÚRGICA</div>
+        </div>
+        <p class="text-xl opacity-90 font-medium leading-relaxed max-w-2xl mx-auto">
+          Desarrollamos tecnología de vanguardia bajo los más estrictos controles de calidad y normativas internacionales de seguridad clínica.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-4 -mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="card bg-white shadow-2xl border-b-8 border-cyan-600 hover:-translate-y-2 transition-transform duration-300">
+      <div class="card-body">
+        <div class="flex items-center gap-4">
+          <span class="text-4xl">🔬</span>
+          <div>
+            <h2 class="card-title text-slate-800 font-bold">Precisión Técnica</h2>
+            <p class="text-xs uppercase tracking-widest text-slate-400 font-bold">Error 0% Tolerancia</p>
+          </div>
+        </div>
+        <p class="text-sm mt-2 text-slate-600">Materiales certificados y procesos de ingeniería probados para durabilidad extrema.</p>
+      </div>
+    </div>
+    <div class="card bg-white shadow-2xl border-b-8 border-blue-600 hover:-translate-y-2 transition-transform duration-300">
+      <div class="card-body">
+        <div class="flex items-center gap-4">
+          <span class="text-4xl">🏥</span>
+          <div>
+            <h2 class="card-title text-slate-800 font-bold">Soluciones Clínicas</h2>
+            <p class="text-xs uppercase tracking-widest text-slate-400 font-bold">Custom Design</p>
+          </div>
+        </div>
+        <p class="text-sm mt-2 text-slate-600">Equipos adaptados a las necesidades específicas de hospitales y centros quirúrgicos.</p>
+      </div>
+    </div>
+    <div class="card bg-white shadow-2xl border-b-8 border-slate-800 hover:-translate-y-2 transition-transform duration-300">
+      <div class="card-body">
+        <div class="flex items-center gap-4">
+          <span class="text-4xl">🛡️</span>
+          <div>
+            <h2 class="card-title text-slate-800 font-bold">Seguridad Total</h2>
+            <p class="text-xs uppercase tracking-widest text-slate-400 font-bold">Paciente & Personal</p>
+          </div>
+        </div>
+        <p class="text-sm mt-2 text-slate-600">Funcionamiento óptimo garantizado mediante rigurosos diagnósticos post-fabricación.</p>
+      </div>
+    </div>
+  </div>
+
+  <aside *ngIf="isAdmin" class="max-w-7xl mx-auto mt-20 px-4">
+    <div class="collapse collapse-arrow bg-white border-2 border-slate-200 shadow-xl overflow-visible">
+      <input type="checkbox" [(ngModel)]="showAdminSection" />
+      <div class="collapse-title text-xl font-black text-slate-800 flex items-center gap-4">
+        <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+        CENTRO DE ADMINISTRACIÓN MULTIMEDIA
+      </div>
+      <div class="collapse-content">
+        <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 mt-2">
+          <h3 class="text-sm font-black uppercase mb-4 text-slate-500">Publicar Nuevo Video de Fabricación</h3>
+          <div class="flex flex-col lg:flex-row gap-4">
+            <input type="text" [(ngModel)]="newVideoTitleForAdd" placeholder="Nombre del Equipo Médico" class="input input-bordered input-primary flex-1 font-bold" />
+            <input type="text" [(ngModel)]="newVideoUrlForAdd" placeholder="URL YouTube (Embed)" class="input input-bordered input-primary flex-1 font-bold" />
+            <button class="btn btn-primary lg:w-48 shadow-lg font-black" (click)="addVideo()">GUARDAR REGISTRO</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <section class="max-w-7xl mx-auto mt-24 px-4">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+      <div>
+        <h2 class="text-4xl font-black text-slate-900 tracking-tighter uppercase">Línea de Producción</h2>
+        <p class="text-slate-500 font-medium">Visualiza nuestros procesos de ensamblaje y control de calidad.</p>
+      </div>
+      <div class="h-1 bg-gradient-to-r from-cyan-500 to-transparent flex-1 hidden md:block mx-8 mb-4 rounded-full"></div>
+    </div>
+
+    <div *ngIf="videos.length === 0" class="alert alert-info bg-blue-50 border-blue-200 text-blue-800 shadow-md">
+      <span class="font-bold italic">No se han cargado demostraciones de fabricación en esta sesión.</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div *ngFor="let video of videos" class="group card bg-white shadow-xl hover:shadow-2xl transition-all duration-500 border border-slate-100 overflow-hidden relative">
+
+        <figure class="aspect-video bg-black relative">
+          <iframe [src]="video.sanitizedUrl" class="w-full h-full opacity-80 group-hover:opacity-100 transition-opacity" allowfullscreen></iframe>
+        </figure>
+
+        <div class="card-body p-8">
+          <div class="flex items-center justify-between">
+            <h3 class="card-title text-slate-900 font-black text-2xl uppercase tracking-tighter">{{ video.title }}</h3>
+            <div class="badge badge-ghost text-[10px] font-black opacity-40">MANUFACTURING SERIES</div>
+          </div>
+
+          <div *ngIf="isAdmin" class="card-actions justify-end mt-6 pt-6 border-t border-slate-100 gap-3">
+            <button class="btn btn-sm btn-ghost text-primary font-black hover:bg-blue-50" (click)="startEdit(video)">✎ MODIFICAR</button>
+            <button class="btn btn-sm btn-ghost text-error font-black hover:bg-red-50" (click)="deleteVideo(video.id!)">🗑 ELIMINAR</button>
+          </div>
+        </div>
+
+        <div *ngIf="editingVideoId === video.id" class="absolute inset-0 bg-white/98 backdrop-blur-md z-30 flex flex-col items-center justify-center p-10 animate-fade-in">
+          <h4 class="text-2xl font-black text-slate-800 mb-8 tracking-tighter uppercase">Actualizar Datos de Proyecto</h4>
+          <div class="w-full max-w-md space-y-4">
+            <div class="form-control w-full">
+              <label class="label font-bold text-xs text-slate-400 uppercase">Título del Video</label>
+              <input [(ngModel)]="currentVideoTitle" class="input input-bordered input-primary w-full font-bold" />
+            </div>
+            <div class="form-control w-full">
+              <label class="label font-bold text-xs text-slate-400 uppercase">URL de YouTube</label>
+              <input [(ngModel)]="currentVideoUrl" class="input input-bordered input-primary w-full font-bold" />
+            </div>
+            <div class="flex gap-4 pt-4">
+              <button class="btn btn-success flex-1 text-white font-black" (click)="saveVideo()">ACTUALIZAR</button>
+              <button class="btn btn-ghost flex-1 font-black" (click)="cancelEdit()">CERRAR</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
