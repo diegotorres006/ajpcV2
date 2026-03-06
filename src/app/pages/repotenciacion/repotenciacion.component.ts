@@ -31,7 +31,7 @@ export class RepotenciacionComponent implements OnInit {
   currentVideoTitle = '';
   currentVideoUrl = '';
 
-  private readonly section: 'potenciacion' = 'potenciacion';
+  private readonly section: string = 'potenciacionVideos';
 
   constructor(private domSanitizer: DomSanitizer, private authService: AuthService) {}
 

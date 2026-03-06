@@ -10,11 +10,11 @@ export interface Credential {
   password: string;
 }
 
-// Interface for video data stored in Firestore
 export interface Video {
-  id?: string; // Optional ID for document reference
+  id?: string;
   title: string;
   url: string;
+  description?: string;
 }
 
 @Injectable({
@@ -25,16 +25,6 @@ export class AuthService {
   private firestore = inject(Firestore);
   readonly authState$: Observable<User | null> = authState(this.auth);
 
-  // Definimos las colecciones
-  private collections: Record<string, CollectionReference<Video>> = {
-    maintenance: collection(this.firestore, 'maintenanceVideos') as CollectionReference<Video>,
-    potenciacion: collection(this.firestore, 'potenciacionVideos') as CollectionReference<Video>,
-    fabricacion: collection(this.firestore, 'fabricacionVideos') as CollectionReference<Video>,
-    domotica: collection(this.firestore, 'domoticaVideos') as CollectionReference<Video>,
-    design: collection(this.firestore, 'designVideos') as CollectionReference<Video>,
-  };
-
-  // --- Autenticación ---
   logInWithEmailAndPassword(credential: Credential): Promise<boolean> {
     return signInWithEmailAndPassword(this.auth, credential.email, credential.password)
       .then(async (userCredential) => {
@@ -66,27 +56,26 @@ export class AuthService {
     return this.auth.signOut();
   }
 
-  // --- 🔧 Métodos genéricos para manejar videos por sección ---
-  private getCollection(section: 'maintenance' | 'potenciacion' | 'fabricacion' | 'domotica' | 'design'): CollectionReference<Video> {
-    return this.collections[section];
+  private getCollection(collectionName: string): CollectionReference<Video> {
+    return collection(this.firestore, collectionName) as CollectionReference<Video>;
   }
 
-  async getVideos(section: 'maintenance' | 'potenciacion' | 'fabricacion' | 'domotica' | 'design'): Promise<Video[]> {
-    const snapshot = await getDocs(this.getCollection(section));
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  async getVideos(collectionName: string): Promise<Video[]> {
+    const snapshot = await getDocs(this.getCollection(collectionName));
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Video));
   }
 
-  async addVideo(section: 'maintenance' | 'potenciacion' | 'fabricacion' | 'domotica' | 'design', videoData: { title: string; url: string }): Promise<DocumentReference> {
-    return addDoc(this.getCollection(section), videoData);
+  async addVideo(collectionName: string, videoData: { title: string; url: string; description?: string }): Promise<DocumentReference> {
+    return addDoc(this.getCollection(collectionName), videoData);
   }
 
-  async updateVideo(section: 'maintenance' | 'potenciacion' | 'fabricacion' | 'domotica' | 'design', videoId: string, videoData: { title: string; url: string }): Promise<void> {
-    const videoDocRef = doc(this.firestore, `${section}Videos/${videoId}`);
+  async updateVideo(collectionName: string, videoId: string, videoData: { title: string; url: string; description?: string }): Promise<void> {
+    const videoDocRef = doc(this.firestore, `${collectionName}/${videoId}`);
     await updateDoc(videoDocRef, videoData);
   }
 
-  async deleteVideo(section: 'maintenance' | 'potenciacion' | 'fabricacion' | 'domotica' | 'design', videoId: string): Promise<void> {
-    const videoDocRef = doc(this.firestore, `${section}Videos/${videoId}`);
+  async deleteVideo(collectionName: string, videoId: string): Promise<void> {
+    const videoDocRef = doc(this.firestore, `${collectionName}/${videoId}`);
     await deleteDoc(videoDocRef);
   }
 }

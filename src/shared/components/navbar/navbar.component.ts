@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -9,21 +9,18 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent {
-  @Input() isLoggedIn: boolean = false;
-  @Output() onLogout = new EventEmitter<void>();
+  @Input() isLoggedIn = false;
   @Output() onLogin = new EventEmitter<void>();
+  @Output() onLogout = new EventEmitter<void>();
 
-  constructor(private router: Router) {}
+  isDropdownOpen = false;
 
-  navegar(ruta: string) {
-    this.router.navigate([ruta]);
-
-    const elem = document.activeElement as HTMLElement;
-    if (elem) {
-      elem.blur();
+  closeMenu() {
+    this.isDropdownOpen = false;
+    // Forzamos al navegador a quitar el foco para asegurar que DaisyUI responda
+    const activeElement = document.activeElement as HTMLElement;
+    if (activeElement) {
+      activeElement.blur();
     }
-
-    const detailsElements = document.querySelectorAll('details');
-    detailsElements.forEach(details => details.removeAttribute('open'));
   }
 }

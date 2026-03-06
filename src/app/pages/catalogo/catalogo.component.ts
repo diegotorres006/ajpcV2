@@ -16,11 +16,12 @@ export class CatalogoComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  allProducts: Producto[] = [];
-  filteredProducts: Producto[] = [];
+  allProducts: any[] = [];
+  filteredProducts: any[] = [];
   searchTerm: string = '';
   selectedCategory: string = '';
-  selectedProduct: Producto | null = null;
+  selectedProduct: any | null = null;
+  indicesImagenes: { [key: number]: number } = {};
 
   ngOnInit(): void {
     this.productoService.getProducto().subscribe({
@@ -54,18 +55,49 @@ export class CatalogoComponent implements OnInit {
     }
 
     this.filteredProducts = products;
+
+    this.filteredProducts.forEach((_, i) => {
+      if (this.indicesImagenes[i] === undefined) {
+        this.indicesImagenes[i] = 0;
+      }
+    });
   }
 
   filtrarPorCategoria(category: string): void {
-    this.selectedCategory = category;
-    this.applyFilters();
+    this.router.navigate(['/catalogo'], { queryParams: category ? { category } : {} });
   }
 
-  selectProduct(product: Producto): void {
+  selectProduct(product: any): void {
     this.selectedProduct = product;
   }
 
   closeModal(): void {
     this.selectedProduct = null;
+  }
+
+  // AQUÍ ESTÁ EL CAMBIO: Ahora busca producto.fotos
+  obtenerImagenUrl(producto: any, index: number): string {
+    if (producto.fotos && producto.fotos.length > 0) {
+      return producto.fotos[this.indicesImagenes[index] || 0];
+    }
+    return producto.foto || 'assets/logo.webp';
+  }
+
+  siguienteImagen(index: number, event: Event, max: number): void {
+    event.stopPropagation();
+    if (this.indicesImagenes[index] < max - 1) {
+      this.indicesImagenes[index]++;
+    } else {
+      this.indicesImagenes[index] = 0;
+    }
+  }
+
+  anteriorImagen(index: number, event: Event, max: number): void {
+    event.stopPropagation();
+    if (this.indicesImagenes[index] > 0) {
+      this.indicesImagenes[index]--;
+    } else {
+      this.indicesImagenes[index] = max - 1;
+    }
   }
 }

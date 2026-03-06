@@ -36,11 +36,11 @@ export class MantenimientoComponent implements OnInit {
 
   async loadVideos(): Promise<void> {
     try {
-      const firebaseVideos = await this.authService.getVideos('maintenance' as any);
+      const firebaseVideos = await this.authService.getVideos('maintenanceVideos');
       this.videos = firebaseVideos.map(video => ({
         id: video.id,
         title: video.title,
-        description: (video as any).description || '',
+        description: video.description || '',
         rawUrl: video.url,
         sanitizedUrl: this.domSanitizer.bypassSecurityTrustResourceUrl(this.convertToEmbedUrl(video.url))
       }));

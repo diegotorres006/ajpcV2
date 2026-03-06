@@ -30,13 +30,13 @@
       <div>
         <label class="label font-black text-[11px] uppercase text-slate-400 tracking-[0.2em] mb-1">Especialidades</label>
         <ul class="menu bg-white border border-slate-200 rounded-[2rem] p-3 shadow-xl space-y-1">
-          <li><a (click)="filtrarPorCategoria('')" [class.active]="selectedCategory === ''" class="font-bold py-3">🌐 Ver Todo</a></li>
-          <li><a (click)="filtrarPorCategoria('Ambulancia')" class="font-bold py-3">🚑 Ambulancias</a></li>
-          <li><a (click)="filtrarPorCategoria('Equipo Medico')" class="font-bold py-3">🩺 Equipo Médico</a></li>
-          <li><a (click)="filtrarPorCategoria('Utileria Medica')" class="font-bold py-3">📦 Utilería Médica</a></li>
-          <li><a (click)="filtrarPorCategoria('Mobiliario Oficina')" class="font-bold py-3">🪑 Mobiliario Oficina</a></li>
-          <li><a (click)="filtrarPorCategoria('Diagnostico')" class="font-bold py-3">🔬 Diagnóstico</a></li>
-          <li><a (click)="filtrarPorCategoria('Mobilirio Medico')" class="font-bold py-3">🏥 Mobiliario Médico</a></li>
+          <li><a (click)="filtrarPorCategoria('')" [class.bg-blue-600]="selectedCategory === ''" [class.text-white]="selectedCategory === ''" class="font-bold py-3 hover:bg-slate-50 transition-all rounded-xl">🌐 Ver Todo</a></li>
+          <li><a (click)="filtrarPorCategoria('Ambulancia')" [class.bg-blue-600]="selectedCategory === 'Ambulancia'" [class.text-white]="selectedCategory === 'Ambulancia'" class="font-bold py-3 hover:bg-slate-50 transition-all rounded-xl">🚑 Ambulancias</a></li>
+          <li><a (click)="filtrarPorCategoria('Equipo Medico')" [class.bg-blue-600]="selectedCategory === 'Equipo Medico'" [class.text-white]="selectedCategory === 'Equipo Medico'" class="font-bold py-3 hover:bg-slate-50 transition-all rounded-xl">🩺 Equipo Médico</a></li>
+          <li><a (click)="filtrarPorCategoria('Utileria Medica')" [class.bg-blue-600]="selectedCategory === 'Utileria Medica'" [class.text-white]="selectedCategory === 'Utileria Medica'" class="font-bold py-3 hover:bg-slate-50 transition-all rounded-xl">📦 Utilería Médica</a></li>
+          <li><a (click)="filtrarPorCategoria('Mobiliario Oficina')" [class.bg-blue-600]="selectedCategory === 'Mobiliario Oficina'" [class.text-white]="selectedCategory === 'Mobiliario Oficina'" class="font-bold py-3 hover:bg-slate-50 transition-all rounded-xl">🪑 Mobiliario Oficina</a></li>
+          <li><a (click)="filtrarPorCategoria('Diagnostico')" [class.bg-blue-600]="selectedCategory === 'Diagnostico'" [class.text-white]="selectedCategory === 'Diagnostico'" class="font-bold py-3 hover:bg-slate-50 transition-all rounded-xl">🔬 Diagnóstico</a></li>
+          <li><a (click)="filtrarPorCategoria('Mobilirio Medico')" [class.bg-blue-600]="selectedCategory === 'Mobilirio Medico'" [class.text-white]="selectedCategory === 'Mobilirio Medico'" class="font-bold py-3 hover:bg-slate-50 transition-all rounded-xl">🏥 Mobiliario Médico</a></li>
         </ul>
       </div>
     </aside>
@@ -53,13 +53,39 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <div *ngFor="let product of filteredProducts" (click)="selectProduct(product)"
+        <div *ngFor="let product of filteredProducts; let i = index" (click)="selectProduct(product)"
              class="group card bg-white shadow-lg hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] hover:-translate-y-3 transition-all duration-500 border border-slate-100 overflow-hidden rounded-[2.5rem] cursor-pointer">
 
           <figure class="bg-slate-50 relative aspect-square overflow-hidden p-6">
-            <img [src]="product.foto" [alt]="product.nombre"
-                 class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-1000" />
-            <div class="absolute top-4 right-4 badge badge-primary font-black shadow-2xl uppercase text-[9px] p-3 rounded-lg border-none">
+
+            <div class="w-full h-full relative group-hover:scale-105 transition-transform duration-700">
+              <ng-container *ngIf="product.fotos && product.fotos.length > 0; else singleImgCat">
+                <img *ngFor="let img of product.fotos; let imgIndex = index"
+                     [src]="img"
+                     [alt]="product.nombre"
+                     [class.opacity-100]="(indicesImagenes[i] || 0) === imgIndex"
+                     [class.opacity-0]="(indicesImagenes[i] || 0) !== imgIndex"
+                     class="absolute inset-0 w-full h-full object-contain transition-opacity duration-300" />
+              </ng-container>
+              <ng-template #singleImgCat>
+                <img [src]="product.foto || 'assets/logo.webp'" [alt]="product.nombre" class="w-full h-full object-contain" />
+              </ng-template>
+            </div>
+
+            <div *ngIf="product.fotos && product.fotos.length > 1" class="absolute inset-0 flex items-center justify-between px-3 z-20 pointer-events-none">
+              <button (click)="anteriorImagen(i, $event, product.fotos.length)" class="pointer-events-auto w-10 h-10 rounded-full bg-white/95 backdrop-blur text-slate-800 flex items-center justify-center hover:bg-primary hover:text-white shadow-[0_4px_15px_rgba(0,0,0,0.2)] transition-colors border border-slate-200">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+              </button>
+              <button (click)="siguienteImagen(i, $event, product.fotos.length)" class="pointer-events-auto w-10 h-10 rounded-full bg-white/95 backdrop-blur text-slate-800 flex items-center justify-center hover:bg-primary hover:text-white shadow-[0_4px_15px_rgba(0,0,0,0.2)] transition-colors border border-slate-200">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+              </button>
+            </div>
+
+            <div *ngIf="product.fotos && product.fotos.length > 1" class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20 pointer-events-none">
+              <div *ngFor="let img of product.fotos; let imgIndex = index" [class]="(indicesImagenes[i] || 0) === imgIndex ? 'w-5 bg-primary shadow-md' : 'w-2 bg-slate-300/80 border border-slate-400/20'" class="h-2 rounded-full transition-all duration-300"></div>
+            </div>
+
+            <div class="absolute top-4 right-4 badge badge-primary font-black shadow-2xl uppercase text-[9px] p-3 rounded-lg border-none z-10">
               {{ product.categoria }}
             </div>
           </figure>
@@ -91,8 +117,8 @@
     <div class="modal-box w-11/12 max-w-6xl p-0 overflow-hidden bg-white rounded-[3rem] shadow-2xl border border-slate-100 flex flex-col md:flex-row" (click)="$event.stopPropagation()">
       <button (click)="closeModal()" class="btn btn-circle btn-ghost absolute right-4 top-4 z-20 bg-slate-100 md:bg-transparent">✕</button>
 
-      <div class="md:w-1/2 bg-slate-50 p-10 flex items-center justify-center min-h-[400px]">
-        <img [src]="selectedProduct?.foto" [alt]="selectedProduct?.nombre" class="max-w-full max-h-[450px] object-contain drop-shadow-xl" />
+      <div class="md:w-1/2 bg-slate-50 p-10 flex items-center justify-center min-h-[400px] relative">
+        <img [src]="selectedProduct?.fotos ? selectedProduct.fotos[0] : selectedProduct?.foto" [alt]="selectedProduct?.nombre" class="max-w-full max-h-[450px] object-contain drop-shadow-xl" />
       </div>
 
       <div class="md:w-1/2 p-10 md:p-16 flex flex-col justify-center">

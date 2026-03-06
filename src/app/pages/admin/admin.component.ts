@@ -37,10 +37,11 @@ export class AdminComponent implements OnInit {
   private uploadService = inject(UploadService);
   private domSanitizer = inject(DomSanitizer);
 
-  productos: Producto[] = [];
-  productoSeleccionado: Producto = { nombre: '', descripcion: '', categoria: '', tipo: '', foto: '' };
+  productos: any[] = [];
+  productoSeleccionado: any = { nombre: '', descripcion: '', categoria: '', tipo: '', foto: '' };
   isEditing = false;
   selectedProductId: string | null = null;
+  indicesImagenes: { [key: number]: number } = {};
 
   categoriasDisponibles: string[] = [
     'Ambulancia', 'Equipo Medico', 'Utileria Medica',
@@ -54,14 +55,14 @@ export class AdminComponent implements OnInit {
   videos: VideoDisplay[] = [];
   newVideoTitle: string = '';
   newVideoUrl: string = '';
-  newVideoDescription: string = '';
-  newVideoCategory: string = 'maintenance';
+  newVideoCategory: string = 'maintenanceVideos';
 
   private seccionesClasificacion = [
-    { id: 'maintenance', name: 'Mantenimiento' },
-    { id: 'potenciacion', name: 'Repotenciación' },
-    { id: 'design', name: 'Diseño 3D' },
-    { id: 'fabrication', name: 'Fabricación' }
+    { id: 'maintenanceVideos', name: 'Mantenimiento' },
+    { id: 'potenciacionVideos', name: 'Repotenciación' },
+    { id: 'designVideos', name: 'Diseño 3D' },
+    { id: 'fabricacionVideos', name: 'Fabricación' },
+    { id: 'domoticaVideos', name: 'Domótica' }
   ];
 
   ngOnInit(): void {
@@ -75,12 +76,18 @@ export class AdminComponent implements OnInit {
         this.productos = data;
 
         const categoriasUnicas = new Set(this.categoriasDisponibles);
-        data.forEach(p => {
+        data.forEach((p: any) => {
           if (p.categoria && p.categoria.trim() !== '') {
             categoriasUnicas.add(p.categoria.trim());
           }
         });
         this.categoriasDisponibles = Array.from(categoriasUnicas);
+
+        this.productos.forEach((_, i) => {
+          if (this.indicesImagenes[i] === undefined) {
+            this.indicesImagenes[i] = 0;
+          }
+        });
       });
     });
   }
@@ -147,21 +154,22 @@ export class AdminComponent implements OnInit {
       }
 
       this.productoSeleccionado.foto = urls.length > 0 ? urls[0] : '';
-      (this.productoSeleccionado as any).fotos = urls;
-      (this.productoSeleccionado as any).fotoPaths = paths;
+      this.productoSeleccionado.fotos = urls;
+      this.productoSeleccionado.fotoPaths = paths;
 
       await this.productoService.crearProducto({ ...this.productoSeleccionado });
       this.resetForm();
+      alert('Registro guardado correctamente');
     } catch (error) {
-      console.error(error);
+      alert('Error al crear el producto. Revisa los permisos.');
     }
   }
 
   async actualizarProducto(): Promise<void> {
     if (!this.selectedProductId) return;
     try {
-      const currentProducto = await firstValueFrom(this.productoService.getProductoRefPorId(this.selectedProductId));
-      const oldPaths = (currentProducto as any)?.fotoPaths || ((currentProducto as any)?.fotoPath ? [(currentProducto as any).fotoPath] : []);
+      const currentProducto: any = await firstValueFrom(this.productoService.getProductoRefPorId(this.selectedProductId));
+      const oldPaths = currentProducto?.fotoPaths || (currentProducto?.fotoPath ? [currentProducto.fotoPath] : []);
 
       const urls: string[] = [];
       const paths: string[] = [];
@@ -186,17 +194,18 @@ export class AdminComponent implements OnInit {
       }
 
       this.productoSeleccionado.foto = urls.length > 0 ? urls[0] : '';
-      (this.productoSeleccionado as any).fotos = urls;
-      (this.productoSeleccionado as any).fotoPaths = paths;
+      this.productoSeleccionado.fotos = urls;
+      this.productoSeleccionado.fotoPaths = paths;
 
       await this.productoService.actualizarProducto(this.selectedProductId, { ...this.productoSeleccionado, id: this.selectedProductId });
       this.resetForm();
+      alert('Registro actualizado correctamente');
     } catch (error) {
-      console.error(error);
+      alert('Error al actualizar el producto.');
     }
   }
 
-  editProduct(producto: Producto): void {
+  editProduct(producto: any): void {
     this.isEditing = true;
     this.selectedProductId = producto.id || null;
     this.productoSeleccionado = { ...producto };
@@ -206,8 +215,8 @@ export class AdminComponent implements OnInit {
       this.categoriasDisponibles.push(producto.categoria);
     }
 
-    const fotosArray = (producto as any).fotos || (producto.foto ? [producto.foto] : []);
-    const pathsArray = (producto as any).fotoPaths || ((producto as any).fotoPath ? [(producto as any).fotoPath] : []);
+    const fotosArray = producto.fotos || (producto.foto ? [producto.foto] : []);
+    const pathsArray = producto.fotoPaths || (producto.fotoPath ? [producto.fotoPath] : []);
 
     for (let i = 0; i < fotosArray.length; i++) {
       this.imagenes.push({ url: fotosArray[i], path: pathsArray[i] });
@@ -271,18 +280,22 @@ export class AdminComponent implements OnInit {
 
   async loadVideos(): Promise<void> {
     this.videos = [];
-    for (const sec of this.seccionesClasificacion) {
-      const firebaseVideos = await this.authService.getVideos(sec.id as any);
-      const mapped = firebaseVideos.map(video => ({
-        id: video.id,
-        title: video.title,
-        description: (video as any).description || '',
-        rawUrl: video.url,
-        sanitizedUrl: this.domSanitizer.bypassSecurityTrustResourceUrl(this.convertToEmbedUrl(video.url)),
-        categoryId: sec.id,
-        categoryName: sec.name
-      }));
-      this.videos = [...this.videos, ...mapped];
+    try {
+      for (const sec of this.seccionesClasificacion) {
+        const firebaseVideos = await this.authService.getVideos(sec.id as any);
+        const mapped = firebaseVideos.map(video => ({
+          id: video.id,
+          title: video.title,
+          description: (video as any).description || '',
+          rawUrl: video.url,
+          sanitizedUrl: this.domSanitizer.bypassSecurityTrustResourceUrl(this.convertToEmbedUrl(video.url)),
+          categoryId: sec.id,
+          categoryName: sec.name
+        }));
+        this.videos = [...this.videos, ...mapped];
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -291,22 +304,35 @@ export class AdminComponent implements OnInit {
         alert('Título y URL son obligatorios para registrar la evidencia.');
         return;
     }
-    const embedUrl = this.convertToEmbedUrl(this.newVideoUrl);
-    await this.authService.addVideo(this.newVideoCategory as any, {
-      title: this.newVideoTitle,
-      url: embedUrl,
-      description: this.newVideoDescription
-    } as any);
-    this.newVideoTitle = '';
-    this.newVideoUrl = '';
-    this.newVideoDescription = '';
-    await this.loadVideos();
+
+    try {
+      const embedUrl = this.convertToEmbedUrl(this.newVideoUrl);
+
+      const videoData: any = {
+        title: this.newVideoTitle,
+        url: embedUrl
+      };
+
+      await this.authService.addVideo(this.newVideoCategory as any, videoData);
+
+      this.newVideoTitle = '';
+      this.newVideoUrl = '';
+      await this.loadVideos();
+      alert('Evidencia de video registrada correctamente');
+    } catch (error) {
+      console.error(error);
+      alert('Error al registrar el video. Revisa la consola para más detalles de Firebase.');
+    }
   }
 
   async deleteVideo(categoryId: string, id: string): Promise<void> {
     if (confirm('¿Eliminar registro definitivo del video?')) {
-      await this.authService.deleteVideo(categoryId as any, id);
-      await this.loadVideos();
+      try {
+        await this.authService.deleteVideo(categoryId as any, id);
+        await this.loadVideos();
+      } catch (error) {
+        alert('Error al eliminar el video.');
+      }
     }
   }
 
@@ -324,5 +350,30 @@ export class AdminComponent implements OnInit {
         error: (err) => { this.isUploading = false; reject(err); }
       });
     });
+  }
+
+  obtenerImagenUrl(producto: any, index: number): string {
+    if (producto.fotos && producto.fotos.length > 0) {
+      return producto.fotos[this.indicesImagenes[index] || 0];
+    }
+    return producto.foto || 'assets/logo.webp';
+  }
+
+  siguienteImagen(index: number, event: Event, max: number): void {
+    event.stopPropagation();
+    if (this.indicesImagenes[index] < max - 1) {
+      this.indicesImagenes[index]++;
+    } else {
+      this.indicesImagenes[index] = 0;
+    }
+  }
+
+  anteriorImagen(index: number, event: Event, max: number): void {
+    event.stopPropagation();
+    if (this.indicesImagenes[index] > 0) {
+      this.indicesImagenes[index]--;
+    } else {
+      this.indicesImagenes[index] = max - 1;
+    }
   }
 }

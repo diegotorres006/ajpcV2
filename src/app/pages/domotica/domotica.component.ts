@@ -17,7 +17,7 @@ interface VideoDisplay {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './domotica.component.html',
-  styles: [] // 🟢 Estilo 100% en el HTML con Tailwind/DaisyUI
+  styles: []
 })
 export class DomoticaComponent implements OnInit {
   videos: VideoDisplay[] = [];
@@ -31,8 +31,7 @@ export class DomoticaComponent implements OnInit {
   currentVideoTitle = '';
   currentVideoUrl = '';
 
-  // 🟢 Sección mapeada correctamente para la colección de Firebase
-  private readonly section: 'domotica' = 'domotica';
+  private readonly section: string = 'domoticaVideos';
 
   constructor(private domSanitizer: DomSanitizer, private authService: AuthService) {}
 
@@ -60,11 +59,10 @@ export class DomoticaComponent implements OnInit {
         sanitizedUrl: this.domSanitizer.bypassSecurityTrustResourceUrl(this.convertToEmbedUrl(video.url))
       }));
     } catch (error) {
-      console.error('Error loading domotica videos:', error);
+      console.error(error);
     }
   }
 
-  // Los métodos addVideo, saveVideo y deleteVideo se mantienen con la lógica original de Firebase
   async addVideo(): Promise<void> {
     if (!this.newVideoTitleForAdd || !this.newVideoUrlForAdd) return;
     await this.authService.addVideo(this.section, { title: this.newVideoTitleForAdd, url: this.convertToEmbedUrl(this.newVideoUrlForAdd) });

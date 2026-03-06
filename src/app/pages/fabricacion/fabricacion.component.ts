@@ -17,7 +17,7 @@ interface VideoDisplay {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './fabricacion.component.html',
-  styles: [] // 🟢 Estilo 100% manejado en el HTML
+  styles: []
 })
 export class FabricacionComponent implements OnInit {
   videos: VideoDisplay[] = [];
@@ -31,8 +31,7 @@ export class FabricacionComponent implements OnInit {
   currentVideoTitle = '';
   currentVideoUrl = '';
 
-  // 🟢 Mapeo exacto para la colección de Firebase
-  private readonly section: 'fabricacion' = 'fabricacion';
+  private readonly section: string = 'fabricacionVideos';
 
   constructor(private domSanitizer: DomSanitizer, private authService: AuthService) {}
 
@@ -60,7 +59,7 @@ export class FabricacionComponent implements OnInit {
         sanitizedUrl: this.domSanitizer.bypassSecurityTrustResourceUrl(this.convertToEmbedUrl(video.url))
       }));
     } catch (error) {
-      console.error('Error cargando videos de fabricación:', error);
+      console.error(error);
     }
   }
 
